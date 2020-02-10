@@ -1,4 +1,12 @@
-import Game, { DIRECTION_TOP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT, FIELD_SIZE } from './Game';
+import Game, {
+  DIRECTION_TOP,
+  DIRECTION_RIGHT,
+  DIRECTION_DOWN,
+  DIRECTION_LEFT,
+  FIELD_SIZE,
+  STANDARD_OFFSET,
+  SNAKE_LENGTH,
+} from './Game';
 import mockGetRandomIn from './random';
 
 jest.mock('./random');
@@ -42,7 +50,7 @@ describe('Game', () => {
     const expectedMin = 0;
     const expectedMax = 3;
 
-    beforeEach(() => {
+    afterEach(() => {
       const game = Game.instance;
       game.direction = null;
     });
@@ -153,16 +161,151 @@ describe('Game', () => {
   });
 
   describe('spawnSnake', () => {
-    describe("snake's head is offset from the borders by body length + 2", () => {
-      // TODO To Be Done
+    describe(`snake's head is offset from the borders by body length (${SNAKE_LENGTH}) + standard offset (${STANDARD_OFFSET})`, () => {
+      afterEach(() => {
+        const game = Game.instance;
+        game.snake = [];
+      });
+
+      describe('snake already spawned', () => {
+        it('should throw an error', () => {
+          // Arrange
+          const expectedMessage = 'Snake is already spawn!';
+          const game = Game.instance;
+          game.snake = [
+            { x: 10, y: 15 },
+            { x: 9, y: 15 },
+            { x: 8, y: 15 },
+            { x: 7, y: 15 },
+          ];
+
+          // Act
+          try {
+            game.spawnSnake();
+            expect(true).toEqual(false);
+          } catch (actualError) {
+            // Assert
+            expect(actualError.message).toEqual(expectedMessage);
+          }
+        });
+      });
+      describe('getRandomCoordinates returns x=10 and y=15', () => {
+        let originalGetRandomCoordinates;
+
+        beforeAll(() => {
+          const game = Game.instance;
+          originalGetRandomCoordinates = game.getRandomCoordinates;
+          game.getRandomCoordinates = jest.fn(() => ({ x: 10, y: 15 }));
+        });
+
+        afterAll(() => {
+          const game = Game.instance;
+          game.getRandomCoordinates = originalGetRandomCoordinates;
+        });
+
+        describe('direction is not set', () => {
+          it('should throw an error', () => {
+            // Arrange
+            const expectedMessage = 'You should specify direction first';
+            const game = Game.instance;
+
+            // Act
+            try {
+              game.spawnSnake();
+              expect(true).toEqual(false);
+            } catch (actualError) {
+              // Assert
+              expect(actualError.message).toEqual(expectedMessage);
+            }
+          });
+        });
+        describe('direction - TOP', () => {
+          it('should spawn snake heading to the the top', () => {
+            // Arrange
+            const expectedOffset = STANDARD_OFFSET + SNAKE_LENGTH;
+            const expectedSnake = [
+              { x: 10, y: 15 },
+              { x: 10, y: 16 },
+              { x: 10, y: 17 },
+              { x: 10, y: 18 },
+            ];
+            const game = Game.instance;
+            game.direction = DIRECTION_TOP;
+
+            // Act
+            game.spawnSnake();
+
+            // Assert
+            expect(game.getRandomCoordinates).toHaveBeenCalledWith(expectedOffset);
+            expect(game.snake).toEqual(expectedSnake);
+          });
+        });
+        describe('direction - RIGHT', () => {
+          it('should spawn snake heading to the the top', () => {
+            // Arrange
+            const expectedOffset = STANDARD_OFFSET + SNAKE_LENGTH;
+            const expectedSnake = [
+              { x: 10, y: 15 },
+              { x: 9, y: 15 },
+              { x: 8, y: 15 },
+              { x: 7, y: 15 },
+            ];
+            const game = Game.instance;
+            game.direction = DIRECTION_RIGHT;
+
+            // Act
+            game.spawnSnake();
+
+            // Assert
+            expect(game.getRandomCoordinates).toHaveBeenCalledWith(expectedOffset);
+            expect(game.snake).toEqual(expectedSnake);
+          });
+        });
+        describe('direction - DOWN', () => {
+          it('should spawn snake heading to the the top', () => {
+            // Arrange
+            const expectedOffset = STANDARD_OFFSET + SNAKE_LENGTH;
+            const expectedSnake = [
+              { x: 10, y: 15 },
+              { x: 10, y: 14 },
+              { x: 10, y: 13 },
+              { x: 10, y: 12 },
+            ];
+            const game = Game.instance;
+            game.direction = DIRECTION_DOWN;
+
+            // Act
+            game.spawnSnake();
+
+            // Assert
+            expect(game.getRandomCoordinates).toHaveBeenCalledWith(expectedOffset);
+            expect(game.snake).toEqual(expectedSnake);
+          });
+        });
+        describe('direction - LEFT', () => {
+          it('should spawn snake heading to the the top', () => {
+            // Arrange
+            const expectedOffset = STANDARD_OFFSET + SNAKE_LENGTH;
+            const expectedSnake = [
+              { x: 10, y: 15 },
+              { x: 11, y: 15 },
+              { x: 12, y: 15 },
+              { x: 13, y: 15 },
+            ];
+            const game = Game.instance;
+            game.direction = DIRECTION_LEFT;
+
+            // Act
+            game.spawnSnake();
+
+            // Assert
+            expect(game.getRandomCoordinates).toHaveBeenCalledWith(expectedOffset);
+            expect(game.snake).toEqual(expectedSnake);
+          });
+        });
+      });
     });
   });
-
-  // describe('spawn snake', () => {
-  //   describe('', () => {
-  //
-  //   });
-  // });
 
   // describe('spawnFood', () => {
   //   it('should spawn a food in a random place', () => {

@@ -7,7 +7,7 @@ import Game, {
   STANDARD_OFFSET,
   SNAKE_LENGTH,
 } from './Game';
-import mockGetRandomIn from './random';
+import mockGetRandomIn, { getRandomInteger as mockGetRandomInteger } from './random';
 
 jest.mock('./random');
 
@@ -29,10 +29,20 @@ describe('Game', () => {
 
     it('should give you a new game when you call getInstance() for the 1st time', () => {
       // Arrange
+      const expectedSize = FIELD_SIZE * FIELD_SIZE;
+      const expectedFirstElement = { x: 1, y: 1 };
+      const expectedLastElement = { x: FIELD_SIZE, y: FIELD_SIZE };
+
       // Act
       const actualGame = Game.instance;
+
       // Assert
       expect(actualGame).toBeInstanceOf(Game);
+      expect(actualGame.isPlaying).toBe(true);
+      expect(actualGame.freeSpace).toBeInstanceOf(Array);
+      expect(actualGame.freeSpace.length).toEqual(expectedSize);
+      expect(actualGame.freeSpace[0]).toEqual(expectedFirstElement);
+      expect(actualGame.freeSpace[expectedSize - 1]).toEqual(expectedLastElement);
     });
 
     it('should return same instance when you call the game for the 2nd time', () => {
@@ -191,11 +201,18 @@ describe('Game', () => {
       });
       describe('getRandomCoordinates returns x=10 and y=15', () => {
         let originalGetRandomCoordinates;
+        let originalFreeSpace;
 
         beforeAll(() => {
           const game = Game.instance;
           originalGetRandomCoordinates = game.getRandomCoordinates;
+          originalFreeSpace = JSON.parse(JSON.stringify(game.freeSpace));
           game.getRandomCoordinates = jest.fn(() => ({ x: 10, y: 15 }));
+        });
+
+        afterEach(() => {
+          const game = Game.instance;
+          game.freeSpace = JSON.parse(JSON.stringify(originalFreeSpace));
         });
 
         afterAll(() => {
@@ -219,8 +236,9 @@ describe('Game', () => {
             }
           });
         });
+
         describe('direction - TOP', () => {
-          it('should spawn snake heading to the the top', () => {
+          it('should spawn snake heading to the the top and reduce free space', () => {
             // Arrange
             const expectedOffset = STANDARD_OFFSET + SNAKE_LENGTH;
             const expectedSnake = [
@@ -229,6 +247,7 @@ describe('Game', () => {
               { x: 10, y: 17 },
               { x: 10, y: 18 },
             ];
+            const expectedFreeSpaceSize = FIELD_SIZE * FIELD_SIZE - 4;
             const game = Game.instance;
             game.direction = DIRECTION_TOP;
 
@@ -238,10 +257,11 @@ describe('Game', () => {
             // Assert
             expect(game.getRandomCoordinates).toHaveBeenCalledWith(expectedOffset);
             expect(game.snake).toEqual(expectedSnake);
+            expect(game.freeSpace.length).toEqual(expectedFreeSpaceSize);
           });
         });
         describe('direction - RIGHT', () => {
-          it('should spawn snake heading to the the top', () => {
+          it('should spawn snake heading to the the right and reduce free space', () => {
             // Arrange
             const expectedOffset = STANDARD_OFFSET + SNAKE_LENGTH;
             const expectedSnake = [
@@ -250,6 +270,7 @@ describe('Game', () => {
               { x: 8, y: 15 },
               { x: 7, y: 15 },
             ];
+            const expectedFreeSpaceSize = FIELD_SIZE * FIELD_SIZE - 4;
             const game = Game.instance;
             game.direction = DIRECTION_RIGHT;
 
@@ -259,10 +280,11 @@ describe('Game', () => {
             // Assert
             expect(game.getRandomCoordinates).toHaveBeenCalledWith(expectedOffset);
             expect(game.snake).toEqual(expectedSnake);
+            expect(game.freeSpace.length).toEqual(expectedFreeSpaceSize);
           });
         });
         describe('direction - DOWN', () => {
-          it('should spawn snake heading to the the top', () => {
+          it('should spawn snake heading down and reduce free space', () => {
             // Arrange
             const expectedOffset = STANDARD_OFFSET + SNAKE_LENGTH;
             const expectedSnake = [
@@ -271,6 +293,7 @@ describe('Game', () => {
               { x: 10, y: 13 },
               { x: 10, y: 12 },
             ];
+            const expectedFreeSpaceSize = FIELD_SIZE * FIELD_SIZE - 4;
             const game = Game.instance;
             game.direction = DIRECTION_DOWN;
 
@@ -280,10 +303,11 @@ describe('Game', () => {
             // Assert
             expect(game.getRandomCoordinates).toHaveBeenCalledWith(expectedOffset);
             expect(game.snake).toEqual(expectedSnake);
+            expect(game.freeSpace.length).toEqual(expectedFreeSpaceSize);
           });
         });
         describe('direction - LEFT', () => {
-          it('should spawn snake heading to the the top', () => {
+          it('should spawn snake heading to the the left and reduce free space', () => {
             // Arrange
             const expectedOffset = STANDARD_OFFSET + SNAKE_LENGTH;
             const expectedSnake = [
@@ -292,6 +316,7 @@ describe('Game', () => {
               { x: 12, y: 15 },
               { x: 13, y: 15 },
             ];
+            const expectedFreeSpaceSize = FIELD_SIZE * FIELD_SIZE - 4;
             const game = Game.instance;
             game.direction = DIRECTION_LEFT;
 
@@ -301,19 +326,56 @@ describe('Game', () => {
             // Assert
             expect(game.getRandomCoordinates).toHaveBeenCalledWith(expectedOffset);
             expect(game.snake).toEqual(expectedSnake);
+            expect(game.freeSpace.length).toEqual(expectedFreeSpaceSize);
           });
         });
       });
     });
   });
 
-  // describe('spawnFood', () => {
-  //   it('should spawn a food in a random place', () => {
-  //     // Arrange
-  //
-  //     // Act
-  //
-  //     // Assert
-  //   });
-  // });
+  describe('spawnFood', () => {
+    let originalFreeSpace;
+
+    beforeAll(() => {
+      const game = Game.instance;
+      originalFreeSpace = JSON.parse(JSON.stringify(game.freeSpace));
+    });
+
+    afterEach(() => {
+      const game = Game.instance;
+      game.freeSpace = JSON.parse(JSON.stringify(originalFreeSpace));
+    });
+
+    describe('no free space left', () => {
+      it('should end the game', () => {
+        // Arrange
+        const game = Game.instance;
+        game.freeSpace = [];
+
+        // Act
+        game.spawnFood();
+
+        // Assert
+        expect(game.isPlaying).toBe(false);
+      });
+    });
+
+    describe('getRandomInteger returns 1', () => {
+      it('should spawn a food', () => {
+        // Arrange
+        const game = Game.instance;
+        const expectedFood = { x: 2, y: 1 };
+        mockGetRandomInteger.mockReturnValue(1);
+        const expectedFreeSpaceSize = 3;
+        game.freeSpace = [{ x: 1, y: 1 }, expectedFood, { x: 3, y: 1 }];
+
+        // Act
+        game.spawnFood();
+
+        // Assert
+        expect(mockGetRandomInteger).toHaveBeenCalledWith(expectedFreeSpaceSize);
+        expect(game.food).toEqual(expectedFood);
+      });
+    });
+  });
 });

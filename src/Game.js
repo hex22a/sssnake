@@ -1,4 +1,4 @@
-import getRandomIn from './random';
+import getRandomIn, { getRandomInteger } from './random';
 
 export const FIELD_SIZE = 50;
 export const STANDARD_OFFSET = 2;
@@ -19,6 +19,14 @@ export default class Game {
     }
     this.direction = null;
     this.snake = [];
+    this.isPlaying = true;
+    const freeSpaceArrayLength = FIELD_SIZE * FIELD_SIZE;
+    this.freeSpace = new Array(freeSpaceArrayLength);
+    for (let i = 0; i < freeSpaceArrayLength; i += 1) {
+      // Caution! Computer science below
+      // eslint-disable-next-line no-bitwise
+      this.freeSpace[i] = { x: (i % FIELD_SIZE) + 1, y: ~~(i / FIELD_SIZE) + 1 };
+    }
   }
 
   static get instance() {
@@ -41,31 +49,55 @@ export default class Game {
   spawnSnake() {
     if (Array.isArray(this.snake) && this.snake.length !== 0) throw new Error('Snake is already spawn!');
     if (this.direction === null) throw new Error('You should specify direction first');
+
     const head = this.getRandomCoordinates(SNAKE_LENGTH + STANDARD_OFFSET);
     this.snake.push(head);
+    let tbr = this.freeSpace.findIndex(coordinate => coordinate.x === head.x && coordinate.y === head.y);
+    this.freeSpace.splice(tbr, 1);
+
     switch (this.direction) {
       case DIRECTION_TOP:
         for (let i = 1; i < SNAKE_LENGTH; i += 1) {
-          this.snake.push({ x: head.x, y: head.y + i });
+          const segment = { x: head.x, y: head.y + i };
+          this.snake.push(segment);
+          tbr = this.freeSpace.findIndex(coordinate => coordinate.x === segment.x && coordinate.y === segment.y);
+          this.freeSpace.splice(tbr, 1);
         }
         break;
       case DIRECTION_RIGHT:
         for (let i = 1; i < SNAKE_LENGTH; i += 1) {
-          this.snake.push({ x: head.x - i, y: head.y });
+          const segment = { x: head.x - i, y: head.y };
+          this.snake.push(segment);
+          tbr = this.freeSpace.findIndex(coordinate => coordinate.x === segment.x && coordinate.y === segment.y);
+          this.freeSpace.splice(tbr, 1);
         }
         break;
       case DIRECTION_DOWN:
         for (let i = 1; i < SNAKE_LENGTH; i += 1) {
-          this.snake.push({ x: head.x, y: head.y - i });
+          const segment = { x: head.x, y: head.y - i };
+          this.snake.push(segment);
+          tbr = this.freeSpace.findIndex(coordinate => coordinate.x === segment.x && coordinate.y === segment.y);
+          this.freeSpace.splice(tbr, 1);
         }
         break;
       case DIRECTION_LEFT:
         for (let i = 1; i < SNAKE_LENGTH; i += 1) {
-          this.snake.push({ x: head.x + i, y: head.y });
+          const segment = { x: head.x + i, y: head.y };
+          this.snake.push(segment);
+          tbr = this.freeSpace.findIndex(coordinate => coordinate.x === segment.x && coordinate.y === segment.y);
+          this.freeSpace.splice(tbr, 1);
         }
         break;
       default:
         console.error('I wish if JS had enums 😭');
+    }
+  }
+
+  spawnFood() {
+    if (Array.isArray(this.freeSpace) && this.freeSpace.length === 0) {
+      this.isPlaying = false;
+    } else {
+      this.food = this.freeSpace[getRandomInteger(this.freeSpace.length)];
     }
   }
 }

@@ -5,7 +5,9 @@ node_js: 13
 git:
   depth: 2
 script:
-- yarn build
+  - yarn lint --quiet
+  - yarn test
+  - yarn build
 deploy:
   provider: pages
   local_dir: build

@@ -1,5 +1,5 @@
 {
-  "extends": ["react-app", "airbnb"],
+  "extends": ["react-app", "airbnb", "plugin:prettier/recommended"],
   "parser": "babel-eslint",
   "env": {
     "browser": true,
@@ -31,9 +31,6 @@
     "no-confusing-arrow": "off",
     "object-curly-newline": "off",
     "implicit-arrow-linebreak": "off",
-    "eol-last": 0,
-    "indent": [2, 2],
-    "quotes": [2, "single"],
-    "jsx-quotes": [0, "prefer-single"]
+    "eol-last": 0
   }
 }

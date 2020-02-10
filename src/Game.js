@@ -9,7 +9,6 @@ export const DIRECTION_RIGHT = 1;
 export const DIRECTION_DOWN = 2;
 export const DIRECTION_LEFT = 3;
 
-// eslint-disable-next-line quotes
 const singletonEnforcer = Symbol("don't mess with a constructor");
 const singleton = Symbol('singleton');
 

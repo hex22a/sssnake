@@ -177,7 +177,7 @@ describe('Game', () => {
         game.snake = [];
       });
 
-      describe('snake already spawned', () => {
+      describe('snake is already spawned', () => {
         it('should throw an error', () => {
           // Arrange
           const expectedMessage = 'Snake is already spawn!';
@@ -375,6 +375,306 @@ describe('Game', () => {
         // Assert
         expect(mockGetRandomInteger).toHaveBeenCalledWith(expectedFreeSpaceSize);
         expect(game.food).toEqual(expectedFood);
+      });
+    });
+  });
+
+  describe('isEating', () => {
+    describe('not eating', () => {
+      it('should be false', () => {
+        // Arrange
+        const game = Game.instance;
+        game.snake = [{ x: 1, y: 1 }];
+        game.food = { x: 3, y: 3 };
+
+        // Act
+        const actualIsEating = game.isEating;
+
+        // Assert
+        expect(actualIsEating).toBe(false);
+      });
+    });
+
+    describe('eating', () => {
+      it('should be true', () => {
+        // Arrange
+        const game = Game.instance;
+        game.snake = [
+          { x: 1, y: 1 },
+          { x: 1, y: 2 },
+        ];
+        game.food = { x: 1, y: 1 };
+
+        // Act
+        const actualIsEating = game.isEating;
+
+        // Assert
+        expect(actualIsEating).toBe(true);
+      });
+    });
+  });
+
+  describe('moveSnake', () => {
+    let originalSpawnFood;
+
+    beforeAll(() => {
+      const game = Game.instance;
+      originalSpawnFood = game.spawnFood;
+      game.spawnFood = jest.fn();
+    });
+
+    afterAll(() => {
+      const game = Game.instance;
+      game.spawnFood = originalSpawnFood;
+    });
+
+    describe('direction - TOP', () => {
+      describe('not eating', () => {
+        it('should update both head and tail of the snake, do not reduce free space', () => {
+          // Arrange
+          const expectedFood = { x: -1, y: -1 };
+          const expectedSnake = [
+            { x: 2, y: 3 },
+            { x: 2, y: 4 },
+          ];
+          const expectedUpdatedSnake = [
+            { x: 2, y: 2 },
+            { x: 2, y: 3 },
+          ];
+          const expectedFreeSpace = [
+            { x: 1, y: 1 },
+            { x: 2, y: 2 },
+          ];
+          const expectedUpdatedFreeSpace = [
+            { x: 1, y: 1 },
+            { x: 2, y: 4 },
+          ];
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_TOP;
+          game.food = expectedFood;
+
+          // Act
+          game.moveSnake();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+      describe('eating', () => {
+        it('should update only head of the snake, free space reduced by 1, spawn new food', () => {
+          // Arrange
+          const expectedFood = { x: 2, y: 2 };
+          const expectedSnake = [
+            { x: 2, y: 3 },
+            { x: 2, y: 4 },
+          ];
+          const expectedUpdatedSnake = [expectedFood, { x: 2, y: 3 }, { x: 2, y: 4 }];
+          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedFood];
+          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_TOP;
+          game.food = expectedFood;
+
+          // Act
+          game.moveSnake();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+          expect(game.spawnFood).toHaveBeenCalled();
+        });
+      });
+    });
+
+    describe('direction - RIGHT', () => {
+      describe('not eating', () => {
+        it('should update both head and tail of the snake, do not reduce free space', () => {
+          // Arrange
+          const expectedFood = { x: -1, y: -1 };
+          const expectedSnake = [
+            { x: 3, y: 1 },
+            { x: 2, y: 1 },
+          ];
+          const expectedUpdatedSnake = [
+            { x: 4, y: 1 },
+            { x: 3, y: 1 },
+          ];
+          const expectedFreeSpace = [
+            { x: 4, y: 1 },
+            { x: 2, y: 2 },
+          ];
+          const expectedUpdatedFreeSpace = [
+            { x: 2, y: 2 },
+            { x: 2, y: 1 },
+          ];
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_RIGHT;
+          game.food = expectedFood;
+
+          // Act
+          game.moveSnake();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+      describe('eating', () => {
+        it('should update only head of the snake, free space reduced by 1, spawn new food', () => {
+          // Arrange
+          const expectedFood = { x: 4, y: 1 };
+          const expectedSnake = [
+            { x: 3, y: 1 },
+            { x: 2, y: 1 },
+          ];
+          const expectedUpdatedSnake = [expectedFood, { x: 3, y: 1 }, { x: 2, y: 1 }];
+          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedFood];
+          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_RIGHT;
+          game.food = expectedFood;
+
+          // Act
+          game.moveSnake();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+          expect(game.spawnFood).toHaveBeenCalled();
+        });
+      });
+    });
+    describe('direction - DOWN', () => {
+      describe('not eating', () => {
+        it('should update both head and tail of the snake, do not reduce free space', () => {
+          // Arrange
+          const expectedFood = { x: -1, y: -1 };
+          const expectedSnake = [
+            { x: 2, y: 4 },
+            { x: 2, y: 3 },
+          ];
+          const expectedUpdatedSnake = [
+            { x: 2, y: 5 },
+            { x: 2, y: 4 },
+          ];
+          const expectedFreeSpace = [
+            { x: 2, y: 5 },
+            { x: 2, y: 2 },
+          ];
+          const expectedUpdatedFreeSpace = [
+            { x: 2, y: 2 },
+            { x: 2, y: 3 },
+          ];
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_DOWN;
+          game.food = expectedFood;
+
+          // Act
+          game.moveSnake();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+      describe('eating', () => {
+        it('should update only head of the snake, free space reduced by 1, spawn new food', () => {
+          // Arrange
+          const expectedFood = { x: 2, y: 5 };
+          const expectedSnake = [
+            { x: 2, y: 4 },
+            { x: 2, y: 3 },
+          ];
+          const expectedUpdatedSnake = [expectedFood, { x: 2, y: 4 }, { x: 2, y: 3 }];
+          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedFood];
+          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_DOWN;
+          game.food = expectedFood;
+
+          // Act
+          game.moveSnake();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+          expect(game.spawnFood).toHaveBeenCalled();
+        });
+      });
+    });
+    describe('direction - LEFT', () => {
+      describe('not eating', () => {
+        it('should update both head and tail of the snake, do not reduce free space', () => {
+          // Arrange
+          const expectedFood = { x: -1, y: -1 };
+          const expectedSnake = [
+            { x: 3, y: 1 },
+            { x: 4, y: 1 },
+          ];
+          const expectedUpdatedSnake = [
+            { x: 2, y: 1 },
+            { x: 3, y: 1 },
+          ];
+          const expectedFreeSpace = [
+            { x: 2, y: 1 },
+            { x: 2, y: 2 },
+          ];
+          const expectedUpdatedFreeSpace = [
+            { x: 2, y: 2 },
+            { x: 4, y: 1 },
+          ];
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_LEFT;
+          game.food = expectedFood;
+
+          // Act
+          game.moveSnake();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+      describe('eating', () => {
+        it('should update only head of the snake, free space reduced by 1, spawn new food', () => {
+          // Arrange
+          const expectedFood = { x: 2, y: 1 };
+          const expectedSnake = [
+            { x: 3, y: 1 },
+            { x: 4, y: 1 },
+          ];
+          const expectedUpdatedSnake = [expectedFood, { x: 3, y: 1 }, { x: 4, y: 1 }];
+          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedFood];
+          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_LEFT;
+          game.food = expectedFood;
+
+          // Act
+          game.moveSnake();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+          expect(game.spawnFood).toHaveBeenCalled();
+        });
       });
     });
   });

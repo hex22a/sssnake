@@ -100,4 +100,37 @@ export default class Game {
       this.food = this.freeSpace[getRandomInteger(this.freeSpace.length)];
     }
   }
+
+  get isEating() {
+    return this.snake[0].x === this.food.x && this.snake[0].y === this.food.y;
+  }
+
+  moveSnake() {
+    let newHead;
+    switch (this.direction) {
+      case DIRECTION_TOP:
+        newHead = { x: this.snake[0].x, y: this.snake[0].y - 1 };
+        break;
+      case DIRECTION_RIGHT:
+        newHead = { x: this.snake[0].x + 1, y: this.snake[0].y };
+        break;
+      case DIRECTION_DOWN:
+        newHead = { x: this.snake[0].x, y: this.snake[0].y + 1 };
+        break;
+      case DIRECTION_LEFT:
+        newHead = { x: this.snake[0].x - 1, y: this.snake[0].y };
+        break;
+      default:
+        console.error('This is 2D snake paw 🐍');
+    }
+    this.snake.unshift(newHead);
+    const tbr = this.freeSpace.findIndex(coordinate => coordinate.x === newHead.x && coordinate.y === newHead.y);
+    this.freeSpace.splice(tbr, 1);
+    if (this.isEating) {
+      this.spawnFood();
+    } else {
+      this.freeSpace.push(this.snake[this.snake.length - 1]);
+      this.snake.pop();
+    }
+  }
 }

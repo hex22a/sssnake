@@ -147,6 +147,75 @@ describe('Game', () => {
     });
   });
 
+  describe('direction setter', () => {
+    afterAll(() => {
+      const game = Game.instance;
+      game.direction = null;
+    });
+
+    describe('setting for the 1st time', () => {
+      it('should update direction', () => {
+        // Arrange
+        const game = Game.instance;
+        const expectedOldDirection = null;
+        const expectedNewDirection = DIRECTION_DOWN;
+        game.direction = expectedOldDirection;
+
+        // Act
+        game.direction = expectedNewDirection;
+
+        // Assert
+        expect(game.direction).toEqual(expectedNewDirection);
+      });
+    });
+    describe('resetting direction', () => {
+      it('should update direction', () => {
+        // Arrange
+        const game = Game.instance;
+        const expectedOldDirection = DIRECTION_DOWN;
+        const expectedNewDirection = null;
+        game.direction = expectedOldDirection;
+
+        // Act
+        game.direction = expectedNewDirection;
+
+        // Assert
+        expect(game.direction).toEqual(expectedNewDirection);
+      });
+    });
+    describe('reverse direction', () => {
+      it('should not do anything', () => {
+        // Arrange
+        const game = Game.instance;
+        const expectedOldDirection = DIRECTION_TOP;
+        const expectedNewDirection = DIRECTION_DOWN;
+        game.direction = expectedOldDirection;
+
+        // Act
+        game.direction = expectedNewDirection;
+
+        // Assert
+        expect(game.direction).toEqual(expectedOldDirection);
+      });
+    });
+
+    describe('turn', () => {
+      it('should update direction', () => {
+        // Arrange
+        const game = Game.instance;
+        const expectedOldDirection = DIRECTION_RIGHT;
+        const expectedNewDirection = DIRECTION_DOWN;
+        game.direction = expectedOldDirection;
+
+        // Act
+        game.direction = expectedNewDirection;
+
+        // Assert
+        expect(game.direction).toEqual(expectedNewDirection);
+      });
+    });
+  });
+
   describe('getRandomCoordinates', () => {
     describe('getRandomIn returns 10 for the 1st time, 5 for 2nd', () => {
       it('should return x=10 and y=5', () => {

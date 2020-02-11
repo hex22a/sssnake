@@ -5,7 +5,7 @@ import Dot from '../atoms/Dot';
 const Snake = ({ body }) => (
   <>
     {body.map(segment => (
-      <Dot x={segment.x} y={segment.y} />
+      <Dot key={`${segment.x}_${segment.y}`} x={segment.x} y={segment.y} />
     ))}
   </>
 );

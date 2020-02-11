@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import GameBox from '../organisms/GameBox';
@@ -23,15 +24,28 @@ const CounterBox = styled.div`
   grid-area: counter;
 `;
 
-const GameField = () => (
+const GameField = ({ snake, food }) => (
   <Grid>
     <GameArea>
-      <GameBox />
+      <GameBox snake={snake} food={food} />
     </GameArea>
     <CounterBox>
       <Score />
     </CounterBox>
   </Grid>
 );
+
+GameField.propTypes = {
+  snake: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number,
+    }),
+  ).isRequired,
+  food: PropTypes.shape({
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }).isRequired,
+};
 
 export default GameField;

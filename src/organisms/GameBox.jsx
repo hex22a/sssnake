@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Food from '../molecules/Food';
 import Snake from '../molecules/Snake';
@@ -9,20 +10,27 @@ const Grid = styled.div`
   grid: repeat(${FIELD_SIZE}, 1fr) / repeat(${FIELD_SIZE}, 1fr);
   width: 100%;
   height: 100%;
+  border: 1px solid;
 `;
 
-const GameBox = () => (
+const GameBox = ({ snake, food }) => (
   <Grid>
-    <Food x={1} y={7} />
-    <Snake
-      body={[
-        { x: 47, y: 50 },
-        { x: 48, y: 50 },
-        { x: 49, y: 50 },
-        { x: 50, y: 50 },
-      ]}
-    />
+    <Food x={food.x} y={food.y} />
+    <Snake body={snake} />
   </Grid>
 );
+
+GameBox.propTypes = {
+  snake: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number,
+    }),
+  ).isRequired,
+  food: PropTypes.shape({
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }).isRequired,
+};
 
 export default GameBox;

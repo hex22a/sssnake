@@ -17,7 +17,7 @@ export default class Game {
     if (enforcer !== singletonEnforcer) {
       throw new Error('Game instance should be accessed via instance property');
     }
-    this.direction = null;
+    this._direction = null;
     this.snake = [];
     this.isPlaying = true;
     const freeSpaceArrayLength = FIELD_SIZE * FIELD_SIZE;
@@ -35,6 +35,23 @@ export default class Game {
     }
 
     return this[singleton];
+  }
+
+  set direction(newDirection) {
+    if (
+      newDirection === null ||
+      this._direction === null ||
+      ((this._direction === DIRECTION_TOP || this._direction === DIRECTION_DOWN) &&
+        (newDirection === DIRECTION_RIGHT || newDirection === DIRECTION_LEFT)) ||
+      ((this._direction === DIRECTION_RIGHT || this._direction === DIRECTION_LEFT) &&
+        (newDirection === DIRECTION_DOWN || newDirection === DIRECTION_TOP))
+    ) {
+      this._direction = newDirection;
+    }
+  }
+
+  get direction() {
+    return this._direction;
   }
 
   initDirection() {

@@ -1,9 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 
 import GameBox from '../organisms/GameBox';
 import Score from '../organisms/Score';
+import { Coordinates } from '../molecules/Snake';
+import { FoodProps } from '../molecules/Food';
 
 const Grid = styled.div`
   display: grid;
@@ -24,7 +25,12 @@ const CounterBox = styled.div`
   grid-area: counter;
 `;
 
-const GameField = ({ snake, food }) => (
+interface GameFieldProps {
+  snake: Array<Coordinates>;
+  food: FoodProps;
+}
+
+const GameField: FunctionComponent<GameFieldProps> = ({ snake, food }) => (
   <Grid>
     <GameArea>
       <GameBox snake={snake} food={food} />
@@ -34,18 +40,5 @@ const GameField = ({ snake, food }) => (
     </CounterBox>
   </Grid>
 );
-
-GameField.propTypes = {
-  snake: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.number,
-      y: PropTypes.number,
-    }),
-  ).isRequired,
-  food: PropTypes.shape({
-    x: PropTypes.number,
-    y: PropTypes.number,
-  }).isRequired,
-};
 
 export default GameField;

@@ -8,14 +8,14 @@ game.initDirection();
 game.spawnSnake();
 game.spawnFood();
 
-const updateFrame = (setSnake, setFood) => {
+const updateFrame = (setSnake: Function, setFood: Function) => {
   game.moveSnake();
   console.info(game.snake);
   setSnake([...game.snake]);
   setFood(game.food);
 };
 
-const handleKeyPress = event => {
+const handleKeyPress = (event: KeyboardEvent) => {
   switch (event.key) {
     case 'ArrowLeft':
       game.direction = DIRECTION_LEFT;

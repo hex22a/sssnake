@@ -1,3 +1,29 @@
+# SSSNAKE
+
+![](https://media.giphy.com/media/RlqvXhhDZNcZunAvNd/giphy.gif)
+
+[![Build Status](https://travis-ci.org/hex22a/sssnake.svg?branch=master)](https://travis-ci.org/hex22a/sssnake)
+
+## What
+
+This is the most basic [Snake Game](https://en.wikipedia.org/wiki/Snake_(video_game_genre) implemented on JavaScript and running in your browser.
+
+Latest demo is available at https://hex22a.github.io/sssnake/
+
+To control snake use arrow key on your keyboard. The only way to restart the game is to completely reload the page (**⇧⌘+R**).
+
+## Why
+
+First of all: because I can. And then I wish at some point to train an AI to play this game and somehow visualise the "game recordings". Then this exercise will be useful.
+
+### Deployment
+
+```bash
+yarn deploy:patch
+```
+
+Increases patch number by [semver](https://semver.org/spec/v2.0.0.html) and pushes the corresponding commit to current branch.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -11,6 +37,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
+
+### `yarn lint`
+
+Runs an eslint.
 
 ### `yarn test`
 

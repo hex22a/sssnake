@@ -405,14 +405,18 @@ describe('Game', () => {
     describe('no free space left', () => {
       it('should end the game', () => {
         // Arrange
+        const expectedErrorMessage = "Can't spawn food. No free space left.";
         const game = Game.instance;
         game.freeSpace = [];
 
         // Act
-        game.spawnFood();
-
-        // Assert
-        expect(game.isPlaying).toBe(false);
+        try {
+          game.spawnFood();
+          expect(true).toBe(false);
+        } catch (actualError) {
+          // Assert
+          expect(actualError.message).toEqual(expectedErrorMessage);
+        }
       });
     });
 
@@ -466,6 +470,47 @@ describe('Game', () => {
 
         // Assert
         expect(actualIsEating).toBe(true);
+      });
+    });
+  });
+
+  describe('checkGameOver', () => {
+    describe('all fine', () => {
+      it('should not do anything', () => {
+        // Arrange
+        const expectedIsPlaying = true;
+
+        const game = Game.instance;
+        game.isPlaying = expectedIsPlaying;
+
+        // Act
+        game.checkGameOver();
+
+        // Assert
+        expect(game.isPlaying).toEqual(expectedIsPlaying);
+      });
+    });
+    describe('self eating', () => {
+      it('should stop the game', () => {
+        // Arrange
+        const expectedIsPlaying = false;
+        const expectedSnake = [
+          { x: 4, y: 2 },
+          { x: 4, y: 3 },
+          { x: 5, y: 3 },
+          { x: 5, y: 2 },
+          { x: 4, y: 2 },
+          { x: 3, y: 2 },
+        ];
+
+        const game = Game.instance;
+        game.snake = expectedSnake;
+
+        // Act
+        game.checkGameOver();
+
+        // Assert
+        expect(game.isPlaying).toEqual(expectedIsPlaying);
       });
     });
   });
@@ -706,15 +751,18 @@ describe('Game', () => {
     let originalSpawnFood: any;
     let originalMoveHead: any;
     let originalMoveTail: any;
+    let originalCheckGameOver: any;
 
     beforeEach(() => {
       const game = Game.instance;
       originalSpawnFood = game.spawnFood;
       originalMoveHead = game.moveHead;
       originalMoveTail = game.moveTail;
+      originalCheckGameOver = game.checkGameOver;
       game.spawnFood = jest.fn();
       game.moveHead = jest.fn();
       game.moveTail = jest.fn();
+      game.checkGameOver = jest.fn();
     });
 
     afterEach(() => {
@@ -722,6 +770,7 @@ describe('Game', () => {
       game.spawnFood = originalSpawnFood;
       game.moveHead = originalMoveHead;
       game.moveTail = originalMoveTail;
+      game.checkGameOver = originalCheckGameOver;
     });
 
     describe('not eating', () => {
@@ -735,6 +784,7 @@ describe('Game', () => {
 
         // Assert
         expect(game.moveHead).toHaveBeenCalled();
+        expect(game.checkGameOver).toHaveBeenCalled();
         expect(game.moveTail).toHaveBeenCalled();
       });
     });
@@ -749,6 +799,7 @@ describe('Game', () => {
 
         // Assert
         expect(game.moveHead).toHaveBeenCalled();
+        expect(game.checkGameOver).toHaveBeenCalled();
         expect(game.spawnFood).toHaveBeenCalled();
         expect(game.moveTail).not.toHaveBeenCalled();
       });

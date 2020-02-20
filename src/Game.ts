@@ -119,7 +119,7 @@ export default class Game {
 
   spawnFood() {
     if (Array.isArray(this.freeSpace) && this.freeSpace.length === 0) {
-      this.isPlaying = false;
+      throw new Error("Can't spawn food. No free space left.");
     } else {
       this.food = this.freeSpace[getRandomInteger(this.freeSpace.length)];
     }
@@ -127,6 +127,13 @@ export default class Game {
 
   get isEating() {
     return this.snake[0].x === this.food.x && this.snake[0].y === this.food.y;
+  }
+
+  checkGameOver() {
+    const [head, ...body] = this.snake;
+    if (body.find(coordinate => coordinate.x === head.x && coordinate.y === head.y)) {
+      this.isPlaying = false;
+    }
   }
 
   moveHead() {
@@ -162,6 +169,7 @@ export default class Game {
 
   moveSnake() {
     this.moveHead();
+    this.checkGameOver();
     if (this.isEating) {
       this.spawnFood();
     } else {

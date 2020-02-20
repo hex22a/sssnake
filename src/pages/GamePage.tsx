@@ -9,10 +9,11 @@ game.spawnSnake();
 game.spawnFood();
 
 const updateFrame = (setSnake: Function, setFood: Function) => {
-  game.moveSnake();
-  console.info(game.snake);
-  setSnake([...game.snake]);
-  setFood(game.food);
+  if (game.isPlaying) {
+    game.moveSnake();
+    setSnake([...game.snake]);
+    setFood(game.food);
+  }
 };
 
 const handleKeyPress = (event: KeyboardEvent) => {

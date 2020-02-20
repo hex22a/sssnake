@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-const Score = () => <div>500 pts</div>;
+interface ScoreProps {
+  points: number;
+}
+
+const Score: FunctionComponent<ScoreProps> = ({ points }) => <>{points}</>;
 
 export default Score;

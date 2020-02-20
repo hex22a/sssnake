@@ -36,7 +36,7 @@ const GameField: FunctionComponent<GameFieldProps> = ({ snake, food }) => (
       <GameBox snake={snake} food={food} />
     </GameArea>
     <CounterBox>
-      <Score />
+      <Score points={(snake.length - 4) * 10} />
     </CounterBox>
   </Grid>
 );

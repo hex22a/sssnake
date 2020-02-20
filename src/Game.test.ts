@@ -1,4 +1,5 @@
 import Game, {
+  DIRECTION_NONE,
   DIRECTION_TOP,
   DIRECTION_RIGHT,
   DIRECTION_DOWN,
@@ -13,20 +14,6 @@ jest.mock('./random');
 
 describe('Game', () => {
   describe('singleton', () => {
-    it('throws error when trying to call constructor directly', () => {
-      // Arrange
-      const expectedErrorMessage = 'Game instance should be accessed via instance property';
-
-      // Act
-      try {
-        const actualGame = new Game();
-        expect(actualGame).toEqual(null); // should never reach this line, otherwise test will fail
-      } catch (actualError) {
-        // Assert
-        expect(actualError.message).toEqual(expectedErrorMessage);
-      }
-    });
-
     it('should give you a new game when you call getInstance() for the 1st time', () => {
       // Arrange
       const expectedSize = FIELD_SIZE * FIELD_SIZE;
@@ -62,7 +49,7 @@ describe('Game', () => {
 
     afterEach(() => {
       const game = Game.instance;
-      game.direction = null;
+      game.direction = DIRECTION_NONE;
     });
 
     describe('getRandomIn returned 0', () => {
@@ -70,7 +57,7 @@ describe('Game', () => {
         // Arrange
         const expectedDirection = DIRECTION_TOP;
         const game = Game.instance;
-        mockGetRandomIn.mockReturnValue(0);
+        (mockGetRandomIn as jest.Mock).mockReturnValue(0);
 
         // Act
         game.initDirection();
@@ -86,7 +73,7 @@ describe('Game', () => {
         // Arrange
         const expectedDirection = DIRECTION_RIGHT;
         const game = Game.instance;
-        mockGetRandomIn.mockReturnValue(1);
+        (mockGetRandomIn as jest.Mock).mockReturnValue(1);
 
         // Act
         game.initDirection();
@@ -101,7 +88,7 @@ describe('Game', () => {
         // Arrange
         const expectedDirection = DIRECTION_DOWN;
         const game = Game.instance;
-        mockGetRandomIn.mockReturnValue(2);
+        (mockGetRandomIn as jest.Mock).mockReturnValue(2);
 
         // Act
         game.initDirection();
@@ -117,7 +104,7 @@ describe('Game', () => {
         // Arrange
         const expectedDirection = DIRECTION_LEFT;
         const game = Game.instance;
-        mockGetRandomIn.mockReturnValue(3);
+        (mockGetRandomIn as jest.Mock).mockReturnValue(3);
 
         // Act
         game.initDirection();
@@ -150,14 +137,14 @@ describe('Game', () => {
   describe('direction setter', () => {
     afterAll(() => {
       const game = Game.instance;
-      game.direction = null;
+      game.direction = DIRECTION_NONE;
     });
 
     describe('setting for the 1st time', () => {
       it('should update direction', () => {
         // Arrange
         const game = Game.instance;
-        const expectedOldDirection = null;
+        const expectedOldDirection = DIRECTION_NONE;
         const expectedNewDirection = DIRECTION_DOWN;
         game.direction = expectedOldDirection;
 
@@ -173,7 +160,7 @@ describe('Game', () => {
         // Arrange
         const game = Game.instance;
         const expectedOldDirection = DIRECTION_DOWN;
-        const expectedNewDirection = null;
+        const expectedNewDirection = DIRECTION_NONE;
         game.direction = expectedOldDirection;
 
         // Act
@@ -226,7 +213,7 @@ describe('Game', () => {
         const expectedCoordinates = { x: expectedX, y: expectedY };
         const expectedMin = expectedOffset + 1;
         const expectedMax = FIELD_SIZE - expectedOffset;
-        mockGetRandomIn.mockReturnValueOnce(expectedX).mockReturnValueOnce(expectedY);
+        (mockGetRandomIn as jest.Mock).mockReturnValueOnce(expectedX).mockReturnValueOnce(expectedY);
         const game = Game.instance;
 
         // Act
@@ -269,8 +256,8 @@ describe('Game', () => {
         });
       });
       describe('getRandomCoordinates returns x=10 and y=15', () => {
-        let originalGetRandomCoordinates;
-        let originalFreeSpace;
+        let originalGetRandomCoordinates: any;
+        let originalFreeSpace: any[];
 
         beforeAll(() => {
           const game = Game.instance;
@@ -403,7 +390,7 @@ describe('Game', () => {
   });
 
   describe('spawnFood', () => {
-    let originalFreeSpace;
+    let originalFreeSpace: any[];
 
     beforeAll(() => {
       const game = Game.instance;
@@ -434,7 +421,7 @@ describe('Game', () => {
         // Arrange
         const game = Game.instance;
         const expectedFood = { x: 2, y: 1 };
-        mockGetRandomInteger.mockReturnValue(1);
+        (mockGetRandomInteger as jest.Mock).mockReturnValue(1);
         const expectedFreeSpaceSize = 3;
         game.freeSpace = [{ x: 1, y: 1 }, expectedFood, { x: 3, y: 1 }];
 
@@ -484,7 +471,7 @@ describe('Game', () => {
   });
 
   describe('moveSnake', () => {
-    let originalSpawnFood;
+    let originalSpawnFood: any;
 
     beforeAll(() => {
       const game = Game.instance;
@@ -501,7 +488,7 @@ describe('Game', () => {
       describe('not eating', () => {
         it('should update both head and tail of the snake, do not reduce free space', () => {
           // Arrange
-          const expectedFood = { x: -1, y: -1 };
+          const expectedFood = { x: DIRECTION_NONE, y: DIRECTION_NONE };
           const expectedSnake = [
             { x: 2, y: 3 },
             { x: 2, y: 4 },
@@ -564,7 +551,7 @@ describe('Game', () => {
       describe('not eating', () => {
         it('should update both head and tail of the snake, do not reduce free space', () => {
           // Arrange
-          const expectedFood = { x: -1, y: -1 };
+          const expectedFood = { x: DIRECTION_NONE, y: DIRECTION_NONE };
           const expectedSnake = [
             { x: 3, y: 1 },
             { x: 2, y: 1 },
@@ -626,7 +613,7 @@ describe('Game', () => {
       describe('not eating', () => {
         it('should update both head and tail of the snake, do not reduce free space', () => {
           // Arrange
-          const expectedFood = { x: -1, y: -1 };
+          const expectedFood = { x: DIRECTION_NONE, y: DIRECTION_NONE };
           const expectedSnake = [
             { x: 2, y: 4 },
             { x: 2, y: 3 },
@@ -688,7 +675,7 @@ describe('Game', () => {
       describe('not eating', () => {
         it('should update both head and tail of the snake, do not reduce free space', () => {
           // Arrange
-          const expectedFood = { x: -1, y: -1 };
+          const expectedFood = { x: DIRECTION_NONE, y: DIRECTION_NONE };
           const expectedSnake = [
             { x: 3, y: 1 },
             { x: 4, y: 1 },

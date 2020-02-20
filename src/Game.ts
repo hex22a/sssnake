@@ -4,20 +4,27 @@ export const FIELD_SIZE = 50;
 export const STANDARD_OFFSET = 2;
 export const SNAKE_LENGTH = 4;
 
+export const DIRECTION_NONE = -1;
 export const DIRECTION_TOP = 0;
 export const DIRECTION_RIGHT = 1;
 export const DIRECTION_DOWN = 2;
 export const DIRECTION_LEFT = 3;
 
-const singletonEnforcer = Symbol("don't mess with a constructor");
-const singleton = Symbol('singleton');
-
 export default class Game {
-  constructor(enforcer) {
-    if (enforcer !== singletonEnforcer) {
-      throw new Error('Game instance should be accessed via instance property');
-    }
-    this._direction = null;
+  private static gameInstance: Game;
+
+  public isPlaying: boolean;
+
+  private _direction: number;
+
+  public snake: any[];
+
+  public freeSpace: any[];
+
+  public food: any;
+
+  private constructor() {
+    this._direction = DIRECTION_NONE;
     this.snake = [];
     this.isPlaying = true;
     const freeSpaceArrayLength = FIELD_SIZE * FIELD_SIZE;
@@ -30,17 +37,17 @@ export default class Game {
   }
 
   static get instance() {
-    if (!this[singleton]) {
-      this[singleton] = new Game(singletonEnforcer);
+    if (!this.gameInstance) {
+      this.gameInstance = new Game();
     }
 
-    return this[singleton];
+    return this.gameInstance;
   }
 
-  set direction(newDirection) {
+  set direction(newDirection: number) {
     if (
-      newDirection === null ||
-      this._direction === null ||
+      newDirection === DIRECTION_NONE ||
+      this._direction === DIRECTION_NONE ||
       ((this._direction === DIRECTION_TOP || this._direction === DIRECTION_DOWN) &&
         (newDirection === DIRECTION_RIGHT || newDirection === DIRECTION_LEFT)) ||
       ((this._direction === DIRECTION_RIGHT || this._direction === DIRECTION_LEFT) &&
@@ -50,22 +57,22 @@ export default class Game {
     }
   }
 
-  get direction() {
+  get direction(): number {
     return this._direction;
   }
 
   initDirection() {
-    if (this.direction !== null) throw new Error('Direction can only be initialized once');
+    if (this.direction !== DIRECTION_NONE) throw new Error('Direction can only be initialized once');
     this.direction = getRandomIn(0, 3);
   }
 
-  getRandomCoordinates(offset) {
+  getRandomCoordinates(offset: number) {
     return { x: getRandomIn(offset + 1, FIELD_SIZE - offset), y: getRandomIn(offset + 1, FIELD_SIZE - offset) };
   }
 
   spawnSnake() {
     if (Array.isArray(this.snake) && this.snake.length !== 0) throw new Error('Snake is already spawn!');
-    if (this.direction === null) throw new Error('You should specify direction first');
+    if (this.direction === DIRECTION_NONE) throw new Error('You should specify direction first');
 
     const head = this.getRandomCoordinates(SNAKE_LENGTH + STANDARD_OFFSET);
     this.snake.push(head);
@@ -123,7 +130,7 @@ export default class Game {
   }
 
   moveSnake() {
-    let newHead;
+    let newHead: any;
     switch (this.direction) {
       case DIRECTION_TOP:
         newHead = { x: this.snake[0].x, y: this.snake[0].y - 1 };

@@ -6,7 +6,7 @@
 
 ## What
 
-This is the most basic [Snake Game](https://en.wikipedia.org/wiki/Snake_(video_game_genre) implemented on JavaScript and running in your browser.
+This is the most basic [Snake Game](https://en.wikipedia.org/wiki/Snake_(video_game_genre\)) implemented on JavaScript and running in your browser.
 
 Latest demo is available at https://hex22a.github.io/sssnake/
 

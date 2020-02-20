@@ -6,7 +6,7 @@
 
 ## What
 
-This is the most basic <a href="https://en.wikipedia.org/wiki/Snake_(video_game_genre)">Snake Game</a> implemented on JavaScript and running in your browser.
+This is the most basic <a href="https://en.wikipedia.org/wiki/Snake_(video_game_genre)">Snake Game</a> implemented on TypeScript and running in your browser.
 
 Latest demo is available at https://hex22a.github.io/sssnake/
 

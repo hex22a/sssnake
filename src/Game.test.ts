@@ -470,267 +470,287 @@ describe('Game', () => {
     });
   });
 
+  describe('moveHead', () => {
+    describe('within game field', () => {
+      describe('direction - TOP', () => {
+        it('should add a new segment with Y decreased by 1', () => {
+          // Arrange
+          const expectedNewHead = { x: 2, y: 2 };
+          const expectedSnake = [
+            { x: 2, y: 3 },
+            { x: 2, y: 4 },
+          ];
+          const expectedUpdatedSnake = [expectedNewHead, { x: 2, y: 3 }, { x: 2, y: 4 }];
+          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedNewHead];
+          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
+
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_TOP;
+
+          // Act
+          game.moveHead();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+      describe('direction - RIGHT', () => {
+        it('should add a new segment with X increased by 1', () => {
+          // Arrange
+          const expectedNewHead = { x: 3, y: 3 };
+          const expectedSnake = [
+            { x: 2, y: 3 },
+            { x: 2, y: 4 },
+          ];
+          const expectedUpdatedSnake = [expectedNewHead, { x: 2, y: 3 }, { x: 2, y: 4 }];
+          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedNewHead];
+          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
+
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_RIGHT;
+
+          // Act
+          game.moveHead();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+      describe('direction - DOWN', () => {
+        it('should add a new segment with Y increased by 1', () => {
+          // Arrange
+          const expectedNewHead = { x: 2, y: 4 };
+          const expectedSnake = [
+            { x: 2, y: 3 },
+            { x: 2, y: 2 },
+          ];
+          const expectedUpdatedSnake = [expectedNewHead, { x: 2, y: 3 }, { x: 2, y: 2 }];
+          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedNewHead];
+          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
+
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_DOWN;
+
+          // Act
+          game.moveHead();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+      describe('direction - LEFT', () => {
+        it('should add a new segment with X decreased by 1', () => {
+          // Arrange
+          const expectedNewHead = { x: 1, y: 3 };
+          const expectedSnake = [
+            { x: 2, y: 3 },
+            { x: 2, y: 4 },
+          ];
+          const expectedUpdatedSnake = [expectedNewHead, { x: 2, y: 3 }, { x: 2, y: 4 }];
+          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedNewHead];
+          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
+
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_LEFT;
+
+          // Act
+          game.moveHead();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+    });
+    describe('teleport', () => {
+      describe('direction - TOP', () => {
+        it(`should add a new segment with Y = ${FIELD_SIZE}`, () => {
+          // Arrange
+          const expectedNewHead = { x: FIELD_SIZE, y: FIELD_SIZE };
+          const expectedSnake = [
+            { x: FIELD_SIZE, y: 1 },
+            { x: FIELD_SIZE, y: 2 },
+          ];
+          const expectedUpdatedSnake = [expectedNewHead, { x: FIELD_SIZE, y: 1 }, { x: FIELD_SIZE, y: 2 }];
+          const expectedFreeSpace = [{ x: 3, y: 3 }, expectedNewHead];
+          const expectedUpdatedFreeSpace = [{ x: 3, y: 3 }];
+
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_TOP;
+
+          // Act
+          game.moveHead();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+      describe('direction - RIGHT', () => {
+        it('should add a new segment with X = 1', () => {
+          // Arrange
+          const expectedNewHead = { x: 1, y: 1 };
+          const expectedSnake = [
+            { x: FIELD_SIZE, y: 1 },
+            { x: FIELD_SIZE, y: 2 },
+          ];
+          const expectedUpdatedSnake = [expectedNewHead, { x: FIELD_SIZE, y: 1 }, { x: FIELD_SIZE, y: 2 }];
+          const expectedFreeSpace = [{ x: 3, y: 3 }, expectedNewHead];
+          const expectedUpdatedFreeSpace = [{ x: 3, y: 3 }];
+
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_RIGHT;
+
+          // Act
+          game.moveHead();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+      describe('direction - DOWN', () => {
+        it('should add a new segment with Y = 1', () => {
+          // Arrange
+          const expectedNewHead = { x: 1, y: 1 };
+          const expectedSnake = [
+            { x: 1, y: FIELD_SIZE },
+            { x: 1, y: FIELD_SIZE - 1 },
+          ];
+          const expectedUpdatedSnake = [expectedNewHead, { x: 1, y: FIELD_SIZE }, { x: 1, y: FIELD_SIZE - 1 }];
+          const expectedFreeSpace = [{ x: 3, y: 3 }, expectedNewHead];
+          const expectedUpdatedFreeSpace = [{ x: 3, y: 3 }];
+
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_DOWN;
+
+          // Act
+          game.moveHead();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+      describe('direction - LEFT', () => {
+        it(`should add a new segment with X = ${FIELD_SIZE}`, () => {
+          // Arrange
+          const expectedNewHead = { x: FIELD_SIZE, y: FIELD_SIZE };
+          const expectedSnake = [
+            { x: 1, y: FIELD_SIZE },
+            { x: 1, y: FIELD_SIZE - 1 },
+          ];
+          const expectedUpdatedSnake = [expectedNewHead, { x: 1, y: FIELD_SIZE }, { x: 1, y: FIELD_SIZE - 1 }];
+          const expectedFreeSpace = [{ x: 3, y: 3 }, expectedNewHead];
+          const expectedUpdatedFreeSpace = [{ x: 3, y: 3 }];
+
+          const game = Game.instance;
+          game.freeSpace = expectedFreeSpace;
+          game.snake = expectedSnake;
+          game.direction = DIRECTION_LEFT;
+
+          // Act
+          game.moveHead();
+
+          // Assert
+          expect(game.snake).toEqual(expectedUpdatedSnake);
+          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+        });
+      });
+    });
+  });
+
+  describe('moveTail', () => {
+    it('should push old tail to the free space while moving snake', () => {
+      // Arrange
+      const expectedOldTail = { x: 3, y: 5 };
+      const expectedSnake = [{ x: 3, y: 3 }, { x: 3, y: 4 }, expectedOldTail];
+      const expectedUpdatedSnake = [
+        { x: 3, y: 3 },
+        { x: 3, y: 4 },
+      ];
+      const expectedFreeSpace = [{ x: 1, y: 1 }];
+      const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }, expectedOldTail];
+
+      const game = Game.instance;
+      game.freeSpace = expectedFreeSpace;
+      game.snake = expectedSnake;
+
+      // Act
+      game.moveTail();
+
+      // Assert
+      expect(game.snake).toEqual(expectedUpdatedSnake);
+      expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
+    });
+  });
+
   describe('moveSnake', () => {
     let originalSpawnFood: any;
+    let originalMoveHead: any;
+    let originalMoveTail: any;
 
-    beforeAll(() => {
+    beforeEach(() => {
       const game = Game.instance;
       originalSpawnFood = game.spawnFood;
+      originalMoveHead = game.moveHead;
+      originalMoveTail = game.moveTail;
       game.spawnFood = jest.fn();
+      game.moveHead = jest.fn();
+      game.moveTail = jest.fn();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       const game = Game.instance;
       game.spawnFood = originalSpawnFood;
+      game.moveHead = originalMoveHead;
+      game.moveTail = originalMoveTail;
     });
 
-    describe('direction - TOP', () => {
-      describe('not eating', () => {
-        it('should update both head and tail of the snake, do not reduce free space', () => {
-          // Arrange
-          const expectedFood = { x: DIRECTION_NONE, y: DIRECTION_NONE };
-          const expectedSnake = [
-            { x: 2, y: 3 },
-            { x: 2, y: 4 },
-          ];
-          const expectedUpdatedSnake = [
-            { x: 2, y: 2 },
-            { x: 2, y: 3 },
-          ];
-          const expectedFreeSpace = [
-            { x: 1, y: 1 },
-            { x: 2, y: 2 },
-          ];
-          const expectedUpdatedFreeSpace = [
-            { x: 1, y: 1 },
-            { x: 2, y: 4 },
-          ];
-          const game = Game.instance;
-          game.freeSpace = expectedFreeSpace;
-          game.snake = expectedSnake;
-          game.direction = DIRECTION_TOP;
-          game.food = expectedFood;
+    describe('not eating', () => {
+      it('should update both head and tail of the snake, do not reduce free space', () => {
+        // Arrange
+        const game = Game.instance;
+        jest.spyOn(game, 'isEating', 'get').mockReturnValue(false);
 
-          // Act
-          game.moveSnake();
+        // Act
+        game.moveSnake();
 
-          // Assert
-          expect(game.snake).toEqual(expectedUpdatedSnake);
-          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
-        });
-      });
-      describe('eating', () => {
-        it('should update only head of the snake, free space reduced by 1, spawn new food', () => {
-          // Arrange
-          const expectedFood = { x: 2, y: 2 };
-          const expectedSnake = [
-            { x: 2, y: 3 },
-            { x: 2, y: 4 },
-          ];
-          const expectedUpdatedSnake = [expectedFood, { x: 2, y: 3 }, { x: 2, y: 4 }];
-          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedFood];
-          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
-          const game = Game.instance;
-          game.freeSpace = expectedFreeSpace;
-          game.snake = expectedSnake;
-          game.direction = DIRECTION_TOP;
-          game.food = expectedFood;
-
-          // Act
-          game.moveSnake();
-
-          // Assert
-          expect(game.snake).toEqual(expectedUpdatedSnake);
-          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
-          expect(game.spawnFood).toHaveBeenCalled();
-        });
+        // Assert
+        expect(game.moveHead).toHaveBeenCalled();
+        expect(game.moveTail).toHaveBeenCalled();
       });
     });
+    describe('eating', () => {
+      it('should update only head of the snake, free space reduced by 1, spawn new food', () => {
+        // Arrange
+        const game = Game.instance;
+        jest.spyOn(game, 'isEating', 'get').mockReturnValue(true);
 
-    describe('direction - RIGHT', () => {
-      describe('not eating', () => {
-        it('should update both head and tail of the snake, do not reduce free space', () => {
-          // Arrange
-          const expectedFood = { x: DIRECTION_NONE, y: DIRECTION_NONE };
-          const expectedSnake = [
-            { x: 3, y: 1 },
-            { x: 2, y: 1 },
-          ];
-          const expectedUpdatedSnake = [
-            { x: 4, y: 1 },
-            { x: 3, y: 1 },
-          ];
-          const expectedFreeSpace = [
-            { x: 4, y: 1 },
-            { x: 2, y: 2 },
-          ];
-          const expectedUpdatedFreeSpace = [
-            { x: 2, y: 2 },
-            { x: 2, y: 1 },
-          ];
-          const game = Game.instance;
-          game.freeSpace = expectedFreeSpace;
-          game.snake = expectedSnake;
-          game.direction = DIRECTION_RIGHT;
-          game.food = expectedFood;
+        // Act
+        game.moveSnake();
 
-          // Act
-          game.moveSnake();
-
-          // Assert
-          expect(game.snake).toEqual(expectedUpdatedSnake);
-          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
-        });
-      });
-      describe('eating', () => {
-        it('should update only head of the snake, free space reduced by 1, spawn new food', () => {
-          // Arrange
-          const expectedFood = { x: 4, y: 1 };
-          const expectedSnake = [
-            { x: 3, y: 1 },
-            { x: 2, y: 1 },
-          ];
-          const expectedUpdatedSnake = [expectedFood, { x: 3, y: 1 }, { x: 2, y: 1 }];
-          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedFood];
-          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
-          const game = Game.instance;
-          game.freeSpace = expectedFreeSpace;
-          game.snake = expectedSnake;
-          game.direction = DIRECTION_RIGHT;
-          game.food = expectedFood;
-
-          // Act
-          game.moveSnake();
-
-          // Assert
-          expect(game.snake).toEqual(expectedUpdatedSnake);
-          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
-          expect(game.spawnFood).toHaveBeenCalled();
-        });
-      });
-    });
-    describe('direction - DOWN', () => {
-      describe('not eating', () => {
-        it('should update both head and tail of the snake, do not reduce free space', () => {
-          // Arrange
-          const expectedFood = { x: DIRECTION_NONE, y: DIRECTION_NONE };
-          const expectedSnake = [
-            { x: 2, y: 4 },
-            { x: 2, y: 3 },
-          ];
-          const expectedUpdatedSnake = [
-            { x: 2, y: 5 },
-            { x: 2, y: 4 },
-          ];
-          const expectedFreeSpace = [
-            { x: 2, y: 5 },
-            { x: 2, y: 2 },
-          ];
-          const expectedUpdatedFreeSpace = [
-            { x: 2, y: 2 },
-            { x: 2, y: 3 },
-          ];
-          const game = Game.instance;
-          game.freeSpace = expectedFreeSpace;
-          game.snake = expectedSnake;
-          game.direction = DIRECTION_DOWN;
-          game.food = expectedFood;
-
-          // Act
-          game.moveSnake();
-
-          // Assert
-          expect(game.snake).toEqual(expectedUpdatedSnake);
-          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
-        });
-      });
-      describe('eating', () => {
-        it('should update only head of the snake, free space reduced by 1, spawn new food', () => {
-          // Arrange
-          const expectedFood = { x: 2, y: 5 };
-          const expectedSnake = [
-            { x: 2, y: 4 },
-            { x: 2, y: 3 },
-          ];
-          const expectedUpdatedSnake = [expectedFood, { x: 2, y: 4 }, { x: 2, y: 3 }];
-          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedFood];
-          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
-          const game = Game.instance;
-          game.freeSpace = expectedFreeSpace;
-          game.snake = expectedSnake;
-          game.direction = DIRECTION_DOWN;
-          game.food = expectedFood;
-
-          // Act
-          game.moveSnake();
-
-          // Assert
-          expect(game.snake).toEqual(expectedUpdatedSnake);
-          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
-          expect(game.spawnFood).toHaveBeenCalled();
-        });
-      });
-    });
-    describe('direction - LEFT', () => {
-      describe('not eating', () => {
-        it('should update both head and tail of the snake, do not reduce free space', () => {
-          // Arrange
-          const expectedFood = { x: DIRECTION_NONE, y: DIRECTION_NONE };
-          const expectedSnake = [
-            { x: 3, y: 1 },
-            { x: 4, y: 1 },
-          ];
-          const expectedUpdatedSnake = [
-            { x: 2, y: 1 },
-            { x: 3, y: 1 },
-          ];
-          const expectedFreeSpace = [
-            { x: 2, y: 1 },
-            { x: 2, y: 2 },
-          ];
-          const expectedUpdatedFreeSpace = [
-            { x: 2, y: 2 },
-            { x: 4, y: 1 },
-          ];
-          const game = Game.instance;
-          game.freeSpace = expectedFreeSpace;
-          game.snake = expectedSnake;
-          game.direction = DIRECTION_LEFT;
-          game.food = expectedFood;
-
-          // Act
-          game.moveSnake();
-
-          // Assert
-          expect(game.snake).toEqual(expectedUpdatedSnake);
-          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
-        });
-      });
-      describe('eating', () => {
-        it('should update only head of the snake, free space reduced by 1, spawn new food', () => {
-          // Arrange
-          const expectedFood = { x: 2, y: 1 };
-          const expectedSnake = [
-            { x: 3, y: 1 },
-            { x: 4, y: 1 },
-          ];
-          const expectedUpdatedSnake = [expectedFood, { x: 3, y: 1 }, { x: 4, y: 1 }];
-          const expectedFreeSpace = [{ x: 1, y: 1 }, expectedFood];
-          const expectedUpdatedFreeSpace = [{ x: 1, y: 1 }];
-          const game = Game.instance;
-          game.freeSpace = expectedFreeSpace;
-          game.snake = expectedSnake;
-          game.direction = DIRECTION_LEFT;
-          game.food = expectedFood;
-
-          // Act
-          game.moveSnake();
-
-          // Assert
-          expect(game.snake).toEqual(expectedUpdatedSnake);
-          expect(game.freeSpace).toEqual(expectedUpdatedFreeSpace);
-          expect(game.spawnFood).toHaveBeenCalled();
-        });
+        // Assert
+        expect(game.moveHead).toHaveBeenCalled();
+        expect(game.spawnFood).toHaveBeenCalled();
+        expect(game.moveTail).not.toHaveBeenCalled();
       });
     });
   });

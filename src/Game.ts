@@ -129,20 +129,23 @@ export default class Game {
     return this.snake[0].x === this.food.x && this.snake[0].y === this.food.y;
   }
 
-  moveSnake() {
+  moveHead() {
     let newHead: any;
+    let newCoordinate: any;
     switch (this.direction) {
       case DIRECTION_TOP:
-        newHead = { x: this.snake[0].x, y: this.snake[0].y - 1 };
+        newHead = { x: this.snake[0].x, y: this.snake[0].y - 1 || FIELD_SIZE };
         break;
       case DIRECTION_RIGHT:
-        newHead = { x: this.snake[0].x + 1, y: this.snake[0].y };
+        newCoordinate = this.snake[0].x + 1;
+        newHead = { x: newCoordinate > FIELD_SIZE ? 1 : newCoordinate, y: this.snake[0].y };
         break;
       case DIRECTION_DOWN:
-        newHead = { x: this.snake[0].x, y: this.snake[0].y + 1 };
+        newCoordinate = this.snake[0].y + 1;
+        newHead = { x: this.snake[0].x, y: newCoordinate > FIELD_SIZE ? 1 : newCoordinate };
         break;
       case DIRECTION_LEFT:
-        newHead = { x: this.snake[0].x - 1, y: this.snake[0].y };
+        newHead = { x: this.snake[0].x - 1 || FIELD_SIZE, y: this.snake[0].y };
         break;
       default:
         console.error('This is 2D snake paw 🐍');
@@ -150,11 +153,19 @@ export default class Game {
     this.snake.unshift(newHead);
     const tbr = this.freeSpace.findIndex(coordinate => coordinate.x === newHead.x && coordinate.y === newHead.y);
     this.freeSpace.splice(tbr, 1);
+  }
+
+  moveTail() {
+    this.freeSpace.push(this.snake[this.snake.length - 1]);
+    this.snake.pop();
+  }
+
+  moveSnake() {
+    this.moveHead();
     if (this.isEating) {
       this.spawnFood();
     } else {
-      this.freeSpace.push(this.snake[this.snake.length - 1]);
-      this.snake.pop();
+      this.moveTail();
     }
   }
 }

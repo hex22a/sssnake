@@ -4,6 +4,8 @@ cache: yarn
 node_js: 13
 git:
   depth: 2
+before_install:
+  - yarn policies set-version berry
 script:
   - yarn lint --quiet
   - yarn test

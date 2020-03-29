@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
+// eslint-disable-next-line import/named
 import { ThemedStyledFunction } from 'styled-components';
 
 // @ts-ignore

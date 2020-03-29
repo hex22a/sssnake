@@ -12,7 +12,7 @@ export interface SnakeProps {
 
 const Snake: FunctionComponent<SnakeProps> = ({ body }) => (
   <>
-    {body.map(segment => (
+    {body.map((segment) => (
       <Dot key={`${segment.x}_${segment.y}`} x={segment.x} y={segment.y} />
     ))}
   </>

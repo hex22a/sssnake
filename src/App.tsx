@@ -1,7 +1,7 @@
 import React from 'react';
 import GamePage from './pages/GamePage';
 
-function App() {
+function App(): any {
   return (
     <>
       <GamePage />

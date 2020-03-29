@@ -76,7 +76,7 @@ export default class Game {
 
     const head = this.getRandomCoordinates(SNAKE_LENGTH + STANDARD_OFFSET);
     this.snake.push(head);
-    let tbr = this.freeSpace.findIndex(coordinate => coordinate.x === head.x && coordinate.y === head.y);
+    let tbr = this.freeSpace.findIndex((coordinate) => coordinate.x === head.x && coordinate.y === head.y);
     this.freeSpace.splice(tbr, 1);
 
     switch (this.direction) {
@@ -84,7 +84,7 @@ export default class Game {
         for (let i = 1; i < SNAKE_LENGTH; i += 1) {
           const segment = { x: head.x, y: head.y + i };
           this.snake.push(segment);
-          tbr = this.freeSpace.findIndex(coordinate => coordinate.x === segment.x && coordinate.y === segment.y);
+          tbr = this.freeSpace.findIndex((coordinate) => coordinate.x === segment.x && coordinate.y === segment.y);
           this.freeSpace.splice(tbr, 1);
         }
         break;
@@ -92,7 +92,7 @@ export default class Game {
         for (let i = 1; i < SNAKE_LENGTH; i += 1) {
           const segment = { x: head.x - i, y: head.y };
           this.snake.push(segment);
-          tbr = this.freeSpace.findIndex(coordinate => coordinate.x === segment.x && coordinate.y === segment.y);
+          tbr = this.freeSpace.findIndex((coordinate) => coordinate.x === segment.x && coordinate.y === segment.y);
           this.freeSpace.splice(tbr, 1);
         }
         break;
@@ -100,7 +100,7 @@ export default class Game {
         for (let i = 1; i < SNAKE_LENGTH; i += 1) {
           const segment = { x: head.x, y: head.y - i };
           this.snake.push(segment);
-          tbr = this.freeSpace.findIndex(coordinate => coordinate.x === segment.x && coordinate.y === segment.y);
+          tbr = this.freeSpace.findIndex((coordinate) => coordinate.x === segment.x && coordinate.y === segment.y);
           this.freeSpace.splice(tbr, 1);
         }
         break;
@@ -108,7 +108,7 @@ export default class Game {
         for (let i = 1; i < SNAKE_LENGTH; i += 1) {
           const segment = { x: head.x + i, y: head.y };
           this.snake.push(segment);
-          tbr = this.freeSpace.findIndex(coordinate => coordinate.x === segment.x && coordinate.y === segment.y);
+          tbr = this.freeSpace.findIndex((coordinate) => coordinate.x === segment.x && coordinate.y === segment.y);
           this.freeSpace.splice(tbr, 1);
         }
         break;
@@ -131,7 +131,7 @@ export default class Game {
 
   checkGameOver() {
     const [head, ...body] = this.snake;
-    if (body.find(coordinate => coordinate.x === head.x && coordinate.y === head.y)) {
+    if (body.find((coordinate) => coordinate.x === head.x && coordinate.y === head.y)) {
       this.isPlaying = false;
     }
   }
@@ -158,7 +158,7 @@ export default class Game {
         console.error('This is 2D snake paw 🐍');
     }
     this.snake.unshift(newHead);
-    const tbr = this.freeSpace.findIndex(coordinate => coordinate.x === newHead.x && coordinate.y === newHead.y);
+    const tbr = this.freeSpace.findIndex((coordinate) => coordinate.x === newHead.x && coordinate.y === newHead.y);
     this.freeSpace.splice(tbr, 1);
   }
 

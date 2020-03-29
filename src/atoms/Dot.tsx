@@ -12,8 +12,8 @@ interface ColoredBoxProps {
 const ColoredBox = withProps<ColoredBoxProps>()(styled.div)`
   width: 100%;
   height: 100%;
-  background-color: ${props => props.color};
-  grid-area: ${props => props.y} / ${props => props.x} / ${props => props.y + 1} / ${props => props.x + 1};
+  background-color: ${(props) => props.color};
+  grid-area: ${(props) => props.y} / ${(props) => props.x} / ${(props) => props.y + 1} / ${(props) => props.x + 1};
 `;
 
 interface DotProps {

@@ -1,5 +1,13 @@
 module.exports = {
-  extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended', 'prettier/@typescript-eslint'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:import/errors',
+    'plugin:import/typescript',
+    'plugin:import/warnings',
+    'plugin:prettier/recommended',
+    'prettier/@typescript-eslint',
+  ],
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
@@ -18,7 +26,6 @@ module.exports = {
   rules: {
     'react/prop-types': 'off',
     'comma-dangle': [2, 'always-multiline'],
-    'arrow-parens': ['error', 'as-needed'],
     semi: 2,
     'max-len': 0,
     'import/imports-first': 0,

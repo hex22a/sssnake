@@ -1,6 +1,6 @@
 {
   "name": "sssnake",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": true,
   "homepage": "/sssnake",
   "dependencies": {
@@ -23,7 +23,7 @@
     "lint": "eslint --ext .tsx,.js,.ts './src/'",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy:patch": "yarn version --patch && git push --follow-tags"
+    "deploy:patch": "yarn version patch && git push --follow-tags"
   },
   "husky": {
     "hooks": {

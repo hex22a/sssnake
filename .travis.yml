@@ -6,6 +6,8 @@ git:
   depth: 2
 before_install:
   - yarn policies set-version berry
+install:
+  - yarn install --immutable
 script:
   - yarn lint --quiet
   - yarn test

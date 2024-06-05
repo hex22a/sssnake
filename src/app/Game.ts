@@ -1,4 +1,5 @@
 import getRandomIn, { getRandomInteger } from '../random';
+import Point from './Point';
 
 export const FIELD_SIZE = 50;
 export const STANDARD_OFFSET = 2;
@@ -17,11 +18,11 @@ export default class Game {
 
   private _direction: number;
 
-  public snake: any[];
+  public snake: Point[];
 
-  public freeSpace: any[];
+  public freeSpace: Point[];
 
-  public food: any;
+  public food: Point = new Point();
 
   private constructor() {
     this._direction = DIRECTION_NONE;
@@ -137,8 +138,8 @@ export default class Game {
   }
 
   moveHead() {
-    let newHead: any;
-    let newCoordinate: any;
+    let newHead: Point = new Point();
+    let newCoordinate: number;
     switch (this.direction) {
       case DIRECTION_TOP:
         newHead = { x: this.snake[0].x, y: this.snake[0].y - 1 || FIELD_SIZE };

@@ -116,22 +116,17 @@ describe('Game', () => {
     });
 
     describe('direction is already set', () => {
-      it('should throw an error', () => {
+      it('should keep the old direction and print warning', () => {
         // Arrange
-        const expectedErrorMessage = 'Direction can only be initialized once';
         const game = Game.instance;
-        game.direction = DIRECTION_TOP;
+        const expectedOldDirection = DIRECTION_TOP;
+        game.direction = expectedOldDirection;
 
         // Act
-        try {
-          game.initDirection();
-          expect(true).toEqual(false);
-        } catch (actualError) {
-          if (actualError instanceof Error) {
-            // Assert
-            expect(actualError.message).toEqual(expectedErrorMessage);
-          }
-        }
+        game.initDirection();
+
+        // Assert
+        expect(game.direction).toEqual(expectedOldDirection);
       });
     });
   });

@@ -63,8 +63,11 @@ export default class Game {
   }
 
   initDirection() {
-    if (this.direction !== DIRECTION_NONE) throw new Error('Direction can only be initialized once');
-    this.direction = getRandomIn(0, 3);
+    if (this.direction == DIRECTION_NONE) {
+      this.direction = getRandomIn(0, 3);
+    } else {
+      console.warn('Direction can only be initialized once');
+    }
   }
 
   getRandomCoordinates(offset: number) {

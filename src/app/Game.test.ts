@@ -43,96 +43,98 @@ describe('Game', () => {
     });
   });
 
-  // describe('initDirection ( random [0-3] )', () => {
-  //   const expectedMin = 0;
-  //   const expectedMax = 3;
+  describe('initDirection ( random [0-3] )', () => {
+    const expectedMin = 0;
+    const expectedMax = 3;
+
+    afterEach(() => {
+      const game = Game.instance;
+      game.direction = DIRECTION_NONE;
+    });
   //
-  //   afterEach(() => {
-  //     const game = Game.instance;
-  //     game.direction = DIRECTION_NONE;
-  //   });
-  //
-  //   describe('getRandomIn returned 0', () => {
-  //     it('should set direction to the TOP', () => {
-  //       // Arrange
-  //       const expectedDirection = DIRECTION_TOP;
-  //       const game = Game.instance;
-  //       (mockGetRandomIn as jest.Mock).mockReturnValue(0);
-  //
-  //       // Act
-  //       game.initDirection();
-  //
-  //       // Assert
-  //       expect(game.direction).toEqual(expectedDirection);
-  //       expect(mockGetRandomIn).toHaveBeenCalledWith(expectedMin, expectedMax);
-  //     });
-  //   });
-  //
-  //   describe('getRandomIn returned 1', () => {
-  //     it('should set direction to the RIGHT', () => {
-  //       // Arrange
-  //       const expectedDirection = DIRECTION_RIGHT;
-  //       const game = Game.instance;
-  //       (mockGetRandomIn as jest.Mock).mockReturnValue(1);
-  //
-  //       // Act
-  //       game.initDirection();
-  //
-  //       // Assert
-  //       expect(game.direction).toEqual(expectedDirection);
-  //       expect(mockGetRandomIn).toHaveBeenCalledWith(expectedMin, expectedMax);
-  //     });
-  //   });
-  //   describe('getRandomIn returned 2', () => {
-  //     it('should set direction to DOWN', () => {
-  //       // Arrange
-  //       const expectedDirection = DIRECTION_DOWN;
-  //       const game = Game.instance;
-  //       (mockGetRandomIn as jest.Mock).mockReturnValue(2);
-  //
-  //       // Act
-  //       game.initDirection();
-  //
-  //       // Assert
-  //       expect(game.direction).toEqual(expectedDirection);
-  //       expect(mockGetRandomIn).toHaveBeenCalledWith(expectedMin, expectedMax);
-  //     });
-  //   });
-  //
-  //   describe('getRandomIn returned 3', () => {
-  //     it('should set direction to the LEFT', () => {
-  //       // Arrange
-  //       const expectedDirection = DIRECTION_LEFT;
-  //       const game = Game.instance;
-  //       (mockGetRandomIn as jest.Mock).mockReturnValue(3);
-  //
-  //       // Act
-  //       game.initDirection();
-  //
-  //       // Assert
-  //       expect(game.direction).toEqual(expectedDirection);
-  //       expect(mockGetRandomIn).toHaveBeenCalledWith(expectedMin, expectedMax);
-  //     });
-  //   });
-  //
-  //   describe('direction is already set', () => {
-  //     it('should throw an error', () => {
-  //       // Arrange
-  //       const expectedErrorMessage = 'Direction can only be initialized once';
-  //       const game = Game.instance;
-  //       game.direction = DIRECTION_TOP;
-  //
-  //       // Act
-  //       try {
-  //         game.initDirection();
-  //         expect(true).toEqual(false);
-  //       } catch (actualError) {
-  //         // Assert
-  //         expect(actualError.message).toEqual(expectedErrorMessage);
-  //       }
-  //     });
-  //   });
-  // });
+    describe('getRandomIn returned 0', () => {
+      it('should set direction to the TOP', () => {
+        // Arrange
+        const expectedDirection = DIRECTION_TOP;
+        const game = Game.instance;
+        (mockGetRandomIn as jest.Mock).mockReturnValue(0);
+
+        // Act
+        game.initDirection();
+
+        // Assert
+        expect(game.direction).toEqual(expectedDirection);
+        expect(mockGetRandomIn).toHaveBeenCalledWith(expectedMin, expectedMax);
+      });
+    });
+
+    describe('getRandomIn returned 1', () => {
+      it('should set direction to the RIGHT', () => {
+        // Arrange
+        const expectedDirection = DIRECTION_RIGHT;
+        const game = Game.instance;
+        (mockGetRandomIn as jest.Mock).mockReturnValue(1);
+
+        // Act
+        game.initDirection();
+
+        // Assert
+        expect(game.direction).toEqual(expectedDirection);
+        expect(mockGetRandomIn).toHaveBeenCalledWith(expectedMin, expectedMax);
+      });
+    });
+    describe('getRandomIn returned 2', () => {
+      it('should set direction to DOWN', () => {
+        // Arrange
+        const expectedDirection = DIRECTION_DOWN;
+        const game = Game.instance;
+        (mockGetRandomIn as jest.Mock).mockReturnValue(2);
+
+        // Act
+        game.initDirection();
+
+        // Assert
+        expect(game.direction).toEqual(expectedDirection);
+        expect(mockGetRandomIn).toHaveBeenCalledWith(expectedMin, expectedMax);
+      });
+    });
+
+    describe('getRandomIn returned 3', () => {
+      it('should set direction to the LEFT', () => {
+        // Arrange
+        const expectedDirection = DIRECTION_LEFT;
+        const game = Game.instance;
+        (mockGetRandomIn as jest.Mock).mockReturnValue(3);
+
+        // Act
+        game.initDirection();
+
+        // Assert
+        expect(game.direction).toEqual(expectedDirection);
+        expect(mockGetRandomIn).toHaveBeenCalledWith(expectedMin, expectedMax);
+      });
+    });
+
+    describe('direction is already set', () => {
+      it('should throw an error', () => {
+        // Arrange
+        const expectedErrorMessage = 'Direction can only be initialized once';
+        const game = Game.instance;
+        game.direction = DIRECTION_TOP;
+
+        // Act
+        try {
+          game.initDirection();
+          expect(true).toEqual(false);
+        } catch (actualError) {
+          if (actualError instanceof Error) {
+            // Assert
+            expect(actualError.message).toEqual(expectedErrorMessage);
+          }
+        }
+      });
+    });
+  });
 
   describe('direction setter', () => {
     afterAll(() => {
@@ -203,28 +205,28 @@ describe('Game', () => {
     });
   });
 
-  // describe('getRandomCoordinates', () => {
-  //   describe('getRandomIn returns 10 for the 1st time, 5 for 2nd', () => {
-  //     it('should return x=10 and y=5', () => {
-  //       // Arrange
-  //       const expectedOffset = 3;
-  //       const expectedX = 10;
-  //       const expectedY = 5;
-  //       const expectedCoordinates = { x: expectedX, y: expectedY };
-  //       const expectedMin = expectedOffset + 1;
-  //       const expectedMax = FIELD_SIZE - expectedOffset;
-  //       (mockGetRandomIn as jest.Mock).mockReturnValueOnce(expectedX).mockReturnValueOnce(expectedY);
-  //       const game = Game.instance;
-  //
-  //       // Act
-  //       const actualCoordinates = game.getRandomCoordinates(expectedOffset);
-  //
-  //       // Assert
-  //       expect(actualCoordinates).toEqual(expectedCoordinates);
-  //       expect(mockGetRandomIn).toHaveBeenCalledWith(expectedMin, expectedMax);
-  //     });
-  //   });
-  // });
+  describe('getRandomCoordinates', () => {
+    describe('getRandomIn returns 10 for the 1st time, 5 for 2nd', () => {
+      it('should return x=10 and y=5', () => {
+        // Arrange
+        const expectedOffset = 3;
+        const expectedX = 10;
+        const expectedY = 5;
+        const expectedCoordinates = { x: expectedX, y: expectedY };
+        const expectedMin = expectedOffset + 1;
+        const expectedMax = FIELD_SIZE - expectedOffset;
+        (mockGetRandomIn as jest.Mock).mockReturnValueOnce(expectedX).mockReturnValueOnce(expectedY);
+        const game = Game.instance;
+
+        // Act
+        const actualCoordinates = game.getRandomCoordinates(expectedOffset);
+
+        // Assert
+        expect(actualCoordinates).toEqual(expectedCoordinates);
+        expect(mockGetRandomIn).toHaveBeenCalledWith(expectedMin, expectedMax);
+      });
+    });
+  });
 
   describe('spawnSnake', () => {
     describe(`snake's head is offset from the borders by body length (${SNAKE_LENGTH}) + standard offset (${STANDARD_OFFSET})`, () => {
@@ -233,28 +235,30 @@ describe('Game', () => {
         game.snake = [];
       });
 
-      // describe('snake is already spawned', () => {
-      //   it('should throw an error', () => {
-      //     // Arrange
-      //     const expectedMessage = 'Snake is already spawn!';
-      //     const game = Game.instance;
-      //     game.snake = [
-      //       { x: 10, y: 15 },
-      //       { x: 9, y: 15 },
-      //       { x: 8, y: 15 },
-      //       { x: 7, y: 15 },
-      //     ];
-      //
-      //     // Act
-      //     try {
-      //       game.spawnSnake();
-      //       expect(true).toEqual(false);
-      //     } catch (actualError) {
-      //       // Assert
-      //       expect(actualError.message).toEqual(expectedMessage);
-      //     }
-      //   });
-      // });
+      describe('snake is already spawned', () => {
+        it('should throw an error', () => {
+          // Arrange
+          const expectedMessage = 'Snake is already spawn!';
+          const game = Game.instance;
+          game.snake = [
+            { x: 10, y: 15 },
+            { x: 9, y: 15 },
+            { x: 8, y: 15 },
+            { x: 7, y: 15 },
+          ];
+
+          // Act
+          try {
+            game.spawnSnake();
+            expect(true).toEqual(false);
+          } catch (actualError) {
+            if (actualError instanceof Error) {
+              // Assert
+              expect(actualError.message).toEqual(expectedMessage);
+            }
+          }
+        });
+      });
       describe('getRandomCoordinates returns x=10 and y=15', () => {
         let originalGetRandomCoordinates: (offset: number) => {x: number, y: number};
         let originalFreeSpace: unknown[];
@@ -402,23 +406,25 @@ describe('Game', () => {
       game.freeSpace = JSON.parse(JSON.stringify(originalFreeSpace));
     });
 
-    // describe('no free space left', () => {
-    //   it('should end the game', () => {
-    //     // Arrange
-    //     const expectedErrorMessage = "Can't spawn food. No free space left.";
-    //     const game = Game.instance;
-    //     game.freeSpace = [];
-    //
-    //     // Act
-    //     try {
-    //       game.spawnFood();
-    //       expect(true).toBe(false);
-    //     } catch (actualError) {
-    //       // Assert
-    //       expect(actualError.message).toEqual(expectedErrorMessage);
-    //     }
-    //   });
-    // });
+    describe('no free space left', () => {
+      it('should end the game', () => {
+        // Arrange
+        const expectedErrorMessage = "Can't spawn food. No free space left.";
+        const game = Game.instance;
+        game.freeSpace = [];
+
+        // Act
+        try {
+          game.spawnFood();
+          expect(true).toBe(false);
+        } catch (actualError) {
+          if (actualError instanceof Error) {
+            // Assert
+            expect(actualError.message).toEqual(expectedErrorMessage);
+          }
+        }
+      });
+    });
 
     describe('getRandomInteger returns 1', () => {
       it('should spawn a food', () => {

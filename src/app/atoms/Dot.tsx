@@ -3,7 +3,6 @@
 import React, { FunctionComponent } from 'react';
 
 import styled from 'styled-components';
-import { withProps } from '../../styled_component_with_props_decorator';
 
 interface ColoredBoxProps {
   color: string;
@@ -11,7 +10,7 @@ interface ColoredBoxProps {
   y: number;
 }
 
-const ColoredBox = withProps<ColoredBoxProps>()(styled.div)`
+const ColoredBox = styled.div<ColoredBoxProps>`
   width: 100%;
   height: 100%;
   background-color: ${(props) => props.color};

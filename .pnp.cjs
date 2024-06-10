@@ -32,6 +32,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:20.12.8"],\
           ["@types/react", "npm:18.3.1"],\
           ["@types/react-dom", "npm:18.3.0"],\
+          ["@types/styled-components", "npm:5.1.34"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c081f9d5482fb2e2c0e716349b5c5ca8ef400ad3924e1f054f3db29a76c8b170838d38866b4115dca50fd9beafe162d478736cf49aa475def195254f9a228a41#npm:7.12.0"],\
           ["@typescript-eslint/parser", "virtual:c081f9d5482fb2e2c0e716349b5c5ca8ef400ad3924e1f054f3db29a76c8b170838d38866b4115dca50fd9beafe162d478736cf49aa475def195254f9a228a41#npm:7.12.0"],\
           ["eslint", "npm:8.57.0"],\
@@ -1656,6 +1657,17 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/hoist-non-react-statics", [\
+      ["npm:3.3.5", {\
+        "packageLocation": "./.yarn/cache/@types-hoist-non-react-statics-npm-3.3.5-98b8d8e47b-b645b062a2.zip/node_modules/@types/hoist-non-react-statics/",\
+        "packageDependencies": [\
+          ["@types/hoist-non-react-statics", "npm:3.3.5"],\
+          ["@types/react", "npm:18.3.1"],\
+          ["hoist-non-react-statics", "npm:3.3.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/istanbul-lib-coverage", [\
       ["npm:2.0.6", {\
         "packageLocation": "./.yarn/cache/@types-istanbul-lib-coverage-npm-2.0.6-2ea31fda9c-3feac423fd.zip/node_modules/@types/istanbul-lib-coverage/",\
@@ -1750,6 +1762,18 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-stack-utils-npm-2.0.3-48a0a03262-72576cc152.zip/node_modules/@types/stack-utils/",\
         "packageDependencies": [\
           ["@types/stack-utils", "npm:2.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/styled-components", [\
+      ["npm:5.1.34", {\
+        "packageLocation": "./.yarn/cache/@types-styled-components-npm-5.1.34-c1fd4bac77-3da291b46f.zip/node_modules/@types/styled-components/",\
+        "packageDependencies": [\
+          ["@types/styled-components", "npm:5.1.34"],\
+          ["@types/hoist-non-react-statics", "npm:3.3.5"],\
+          ["@types/react", "npm:18.3.1"],\
+          ["csstype", "npm:3.1.3"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -4012,6 +4036,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:20.12.8"],\
           ["@types/react", "npm:18.3.1"],\
           ["@types/react-dom", "npm:18.3.0"],\
+          ["@types/styled-components", "npm:5.1.34"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c081f9d5482fb2e2c0e716349b5c5ca8ef400ad3924e1f054f3db29a76c8b170838d38866b4115dca50fd9beafe162d478736cf49aa475def195254f9a228a41#npm:7.12.0"],\
           ["@typescript-eslint/parser", "virtual:c081f9d5482fb2e2c0e716349b5c5ca8ef400ad3924e1f054f3db29a76c8b170838d38866b4115dca50fd9beafe162d478736cf49aa475def195254f9a228a41#npm:7.12.0"],\
           ["eslint", "npm:8.57.0"],\
@@ -4561,6 +4586,16 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["hasown", "npm:2.0.2"],\
           ["function-bind", "npm:1.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["hoist-non-react-statics", [\
+      ["npm:3.3.2", {\
+        "packageLocation": "./.yarn/cache/hoist-non-react-statics-npm-3.3.2-e7b709e6c1-1acbe85f33.zip/node_modules/hoist-non-react-statics/",\
+        "packageDependencies": [\
+          ["hoist-non-react-statics", "npm:3.3.2"],\
+          ["react-is", "npm:16.13.1"]\
         ],\
         "linkType": "HARD"\
       }]\

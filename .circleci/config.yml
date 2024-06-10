@@ -27,7 +27,7 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - run: curl -o- -L https://yarnpkg.com/install.sh | bash
-      - run: yarn set version 4.2.1
+      - run: yarn set version berry
       - restore_cache:
           key: yarn-cache-{{ checksum "yarn.lock" }}
       - run: yarn install
@@ -57,7 +57,7 @@ jobs:
             - "SHA256:K13r15ubS1ee0uPhmBa67AXCfMvz+s1us8DoK5yj1GA"
       - checkout
       - run: curl -o- -L https://yarnpkg.com/install.sh | bash
-      - run: yarn set version 4.2.1
+      - run: yarn set version berry
       - restore_cache:
           key: yarn-cache-{{ checksum "yarn.lock" }}
       - run: yarn install

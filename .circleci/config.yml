@@ -26,11 +26,11 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout:
-          path: ~/repo
+          path: ~/sssnake
       - run: curl -o- -L https://yarnpkg.com/install.sh | bash
       - run: yarn set version berry
-#      - restore_cache:
-#          key: yarn-cache-{{ checksum "yarn.lock" }}
+      - restore_cache:
+          key: yarn-cache-{{ checksum "yarn.lock" }}
       - run: yarn install
       - save_cache:
           key: yarn-cache-{{ checksum "yarn.lock" }}
@@ -51,7 +51,7 @@ jobs:
           fingerprints:
             - "SHA256:K13r15ubS1ee0uPhmBa67AXCfMvz+s1us8DoK5yj1GA"
       - checkout:
-          path: ~/repo
+          path: ~/sssnake
       - run: curl -o- -L https://yarnpkg.com/install.sh | bash
       - run: yarn set version berry
       - restore_cache:
@@ -67,7 +67,7 @@ jobs:
       - run:
           name: Deploy to GitHub Pages
           command: |
-            cd ~/repo/build
+            cd ~/sssnake/build
             git init
             git add .
             git config user.email "1903291+hex22a@users.noreply.github.com"

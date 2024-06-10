@@ -10,7 +10,6 @@ version: 2.1
 orbs:
   # See the Node orb documentation here: https://circleci.com/developer/orbs/orb/circleci/node
   node: circleci/node@5.2
-  gh-pages: sugarshin/gh-pages@1.0.1
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
@@ -44,6 +43,9 @@ jobs:
     docker:
       - image: cimg/mode:22.2
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:K13r15ubS1ee0uPhmBa67AXCfMvz+s1us8DoK5yj1GA"
       - checkout
 
       - node/install-packages:
@@ -51,12 +53,14 @@ jobs:
       - run:
           name: Build app
           command: yarn build
-      - gh-pages/deploy:
-          build-dir: build
-          setup-git: true
-          ssh-fingerprints:
-            - SHA256:K13r15ubS1ee0uPhmBa67AXCfMvz+s1us8DoK5yj1GA
-
+      - run:
+          name: Deploy to GitHub Pages
+          command: |
+            git config user.email "1903291+hex22a@users.noreply.github.com"
+            git config user.name "CircleCI (on behalf of Crash)"
+            git add -A
+            git commit -m "CircleCI deploy to GitHub Pages"
+            git push origin gh-pages
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:

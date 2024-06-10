@@ -69,7 +69,7 @@ jobs:
             git config user.name "CircleCI (on behalf of Crash)"
             git add -A
             git commit -m "CircleCI deploy to GitHub Pages"
-            git push origin gh-pages
+            git subtree push --prefix build origin gh-pages
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:

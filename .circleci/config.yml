@@ -44,7 +44,7 @@ jobs:
 
   build-and-deploy:
     docker:
-      - image: cimg/mode:22.2
+      - image: cimg/node:22.2
     steps:
       - add_ssh_keys:
           fingerprints:

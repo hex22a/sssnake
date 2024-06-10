@@ -26,9 +26,15 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-      - run:
-          name: Enable Corepack
-          command: corepack enable
+      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
+      - run: yarn set version berry
+      - restore_cache:
+          key: yarn-cache-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - save_cache:
+          key: yarn-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ./.yarn/cache
 
       # The node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
@@ -50,9 +56,15 @@ jobs:
           fingerprints:
             - "SHA256:K13r15ubS1ee0uPhmBa67AXCfMvz+s1us8DoK5yj1GA"
       - checkout
-      - run:
-          name: Enable Corepack
-          command: corepack enable
+      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
+      - run: yarn set version berry
+      - restore_cache:
+          key: yarn-cache-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - save_cache:
+          key: yarn-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ./.yarn/cache
 
       - node/install-packages:
           pkg-manager: yarn

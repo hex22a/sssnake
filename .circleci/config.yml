@@ -29,8 +29,8 @@ jobs:
           path: ~/repo
       - run: curl -o- -L https://yarnpkg.com/install.sh | bash
       - run: yarn set version berry
-      - restore_cache:
-          key: yarn-cache-{{ checksum "yarn.lock" }}
+#      - restore_cache:
+#          key: yarn-cache-{{ checksum "yarn.lock" }}
       - run: yarn install
       - save_cache:
           key: yarn-cache-{{ checksum "yarn.lock" }}

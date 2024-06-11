@@ -63,12 +63,14 @@ jobs:
       - run:
           name: Deploy to GitHub Pages
           command: |
-            ls -la
+            cd ./out
+            git init
             git config user.email "1903291+hex22a@users.noreply.github.com"
             git config user.name "CircleCI (on behalf of Crash)"
+            git add .
             git commit -m "CircleCI deploy to GitHub Pages"
             git remote add origin https://github.com/hex22a/sssnake.git
-            git push -u origin master:gh-pages
+            git push -u origin main:gh-pages
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:

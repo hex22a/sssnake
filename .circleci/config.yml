@@ -70,7 +70,7 @@ jobs:
             git add .
             git commit -m "CircleCI deploy to GitHub Pages"
             git remote add origin https://github.com/hex22a/sssnake.git
-            git push -u origin master:gh-pages
+            git push -u origin master:gh-pages --force
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:

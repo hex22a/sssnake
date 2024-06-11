@@ -28,6 +28,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@next/eslint-plugin-next", "npm:14.2.3"],\
+          ["@opentelemetry/api", "npm:1.9.0"],\
           ["@sentry/nextjs", "virtual:c081f9d5482fb2e2c0e716349b5c5ca8ef400ad3924e1f054f3db29a76c8b170838d38866b4115dca50fd9beafe162d478736cf49aa475def195254f9a228a41#npm:8.8.0"],\
           ["@types/jest", "npm:29.5.12"],\
           ["@types/node", "npm:20.12.8"],\
@@ -5811,6 +5812,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["example", "workspace:."],\
           ["@next/eslint-plugin-next", "npm:14.2.3"],\
+          ["@opentelemetry/api", "npm:1.9.0"],\
           ["@sentry/nextjs", "virtual:c081f9d5482fb2e2c0e716349b5c5ca8ef400ad3924e1f054f3db29a76c8b170838d38866b4115dca50fd9beafe162d478736cf49aa475def195254f9a228a41#npm:8.8.0"],\
           ["@types/jest", "npm:29.5.12"],\
           ["@types/node", "npm:20.12.8"],\
@@ -8161,7 +8163,7 @@ const RAW_RUNTIME_STATE =
           ["@next/swc-win32-arm64-msvc", "npm:14.2.3"],\
           ["@next/swc-win32-ia32-msvc", "npm:14.2.3"],\
           ["@next/swc-win32-x64-msvc", "npm:14.2.3"],\
-          ["@opentelemetry/api", null],\
+          ["@opentelemetry/api", "npm:1.9.0"],\
           ["@playwright/test", null],\
           ["@swc/helpers", "npm:0.5.5"],\
           ["@types/opentelemetry__api", null],\

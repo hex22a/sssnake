@@ -62,25 +62,28 @@ jobs:
           paths:
             - .
 
-  deployment:
-    - add_ssh_keys:
-        fingerprints:
-          - "SHA256:K13r15ubS1ee0uPhmBa67AXCfMvz+s1us8DoK5yj1GA"
-    - attach_workspace:
-        at: /tmp/out
-    - checkout
-    - run:
-        name: Deploy to GitHub Pages
-        command: |
-          git fetch
-          git checkout gh-pages
-          mv /tmp/out .
-          touch .nojekyll
-          git config user.email "1903291+hex22a@users.noreply.github.com"
-          git config user.name "CircleCI (on behalf of Crash)"
-          git add .
-          git commit -m "CircleCI deploy to GitHub Pages"
-          git push -u origin gh-pages
+  deploy:
+    docker:
+      - image: cimg/node:22.2
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:K13r15ubS1ee0uPhmBa67AXCfMvz+s1us8DoK5yj1GA"
+      - attach_workspace:
+          at: /tmp/out
+      - checkout
+      - run:
+          name: Deploy to GitHub Pages
+          command: |
+            git fetch
+            git checkout gh-pages
+            mv /tmp/out .
+            touch .nojekyll
+            git config user.email "1903291+hex22a@users.noreply.github.com"
+            git config user.name "CircleCI (on behalf of Crash)"
+            git add .
+            git commit -m "CircleCI deploy to GitHub Pages"
+            git push -u origin gh-pages
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:
@@ -103,9 +106,9 @@ workflows:
             branches:
               ignore: /.*/
           requires:
-            - build-and-test
+            - test
 
-      - deployment:
+      - deploy:
           filters:
             tags:
               only: /^\d+.\d+.\d+$/

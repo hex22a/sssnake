@@ -61,7 +61,8 @@ jobs:
           root: out
           paths:
             - .
-  deploy:
+
+  deployment:
     - add_ssh_keys:
         fingerprints:
           - "SHA256:K13r15ubS1ee0uPhmBa67AXCfMvz+s1us8DoK5yj1GA"
@@ -104,7 +105,7 @@ workflows:
           requires:
             - build-and-test
 
-      - deploy:
+      - deployment:
           filters:
             tags:
               only: /^\d+.\d+.\d+$/

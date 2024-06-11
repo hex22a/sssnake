@@ -13,7 +13,7 @@ orbs:
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
-  build-and-test:
+  test:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/executor-intro/ & https://circleci.com/docs/configuration-reference/#executor-job
     docker:
@@ -41,13 +41,10 @@ jobs:
           name: Run tests
           command: yarn test
 
-  build-and-deploy:
+  build:
     docker:
       - image: cimg/node:22.2
     steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "SHA256:K13r15ubS1ee0uPhmBa67AXCfMvz+s1us8DoK5yj1GA"
       - checkout
       - run: yarn set version berry
       - restore_cache:
@@ -60,25 +57,36 @@ jobs:
       - run:
           name: Build app
           command: yarn build
+      - persist_to_workspace:
+          root: out
+          paths:
+            - .
+    deploy:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:K13r15ubS1ee0uPhmBa67AXCfMvz+s1us8DoK5yj1GA"
+      - attach_workspace:
+          at: /tmp/out
+      - checkout
       - run:
           name: Deploy to GitHub Pages
           command: |
-            cd ./out
+            git fetch
+            git checkout gh-pages
+            mv /tmp/out .
             touch .nojekyll
-            git init
             git config user.email "1903291+hex22a@users.noreply.github.com"
             git config user.name "CircleCI (on behalf of Crash)"
             git add .
             git commit -m "CircleCI deploy to GitHub Pages"
-            git remote add origin https://github.com/hex22a/sssnake.git
-            git push -u origin master:gh-pages --force
+            git push -u origin gh-pages
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   deploy-gh-pages: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - build-and-test:
+      - test:
           filters:
             tags:
               only: /.*/
@@ -87,7 +95,7 @@ workflows:
                 - gh-pages
       # For running simple node tests, you could optionally use the node/test job from the orb to replicate and replace the job above in fewer lines.
       # - node/test
-      - build-and-deploy:
+      - build:
           filters:
             tags:
               only: /^\d+.\d+.\d+$/
@@ -95,3 +103,13 @@ workflows:
               ignore: /.*/
           requires:
             - build-and-test
+
+      - deploy:
+          filters:
+            tags:
+              only: /^\d+.\d+.\d+$/
+            branches:
+              ignore: /.*/
+          requires:
+            - test
+            - build

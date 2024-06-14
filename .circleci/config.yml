@@ -77,6 +77,8 @@ jobs:
           command: |
             git fetch
             git checkout gh-pages
+            ls -la
+            rm -rf out
             mv /tmp/out .
             touch .nojekyll
             git config user.email "1903291+hex22a@users.noreply.github.com"
